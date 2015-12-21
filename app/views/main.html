@@ -1,0 +1,56 @@
+<div class="row">
+    <div class="col-xs-12">
+        <div class="jumbotron">
+            <h2>Set your criteria</h2>
+            <form>
+                <div class="form-group">
+                    <label for="classes">Choose class</label>
+                    <select 
+                        class="form-control" 
+                        name="classes" 
+                        id="classes" 
+                        ng-model="main.form.class" 
+                        ng-options="class for class in main.data.classes"
+                        ng-change="main.getCards(main.form.class)">
+
+                    <option value="" disabled selected hidden>Select a class</option>
+
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="classes">Choose set</label>
+                    <select class="form-control" name="sets" id="sets" ng-model="main.form.set" ng-options="set for set in main.data.sets">
+                    </select>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <form>
+            <div class="form-group">
+                <label for="searchField">Filter:</label>
+                <input type="text" placeholder="Search" class="form-control" ng-model="main.form.searchQuery">
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <h3>{{main.form.class}} Cards</h3>
+        <hearthstone-card 
+            card="card" 
+            ng-repeat="card in main.data.cards | orderBy: 'cost' | class:main.form.class | set:main.form.set | filter: main.form.searchQuery">
+        </hearthstone-card>
+    </div>
+    <div class="col-xs-12">
+        <h3>Neutral Cards</h3>
+        <hearthstone-card 
+            card="card"
+            ng-repeat="card in main.data.cards | orderBy: 'cost' | class:'Neutral' | set:main.form.set | filter: main.form.searchQuery">
+        </hearthstone-card>
+    </div>
+</div>
