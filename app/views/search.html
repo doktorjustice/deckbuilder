@@ -1,0 +1,49 @@
+<div class="row">
+    
+    <div class="col-xs-12 col-md-3">
+        <div class="jumbotron col-xs-12">
+            <h2>Your deck</h2>
+            {{search.deckData.currentDeck.counter}}
+        </div>
+
+        <div>
+            <div class="col-xs-12" ng-repeat="card in search.deckData.currentDeck.cards | orderBy: 'cost'">
+                <hearthstone-card card="card" ng-click="search.removeCard(card)"></hearthstone-card>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xs-12 col-md-9">
+
+        <div class="jumbotron col-xs-12">
+            <h2>Search for cards</h2>
+            <form>
+                <div class="form-group">
+                    <label for="searchField">Filter:</label>
+                    <input type="text" placeholder="Search" class="form-control" ng-model="search.form.searchQuery">
+                </div>
+            </form>
+        </div>
+        <div ng-hide="search.cardData.cards.length">
+            Retrieving card data...
+        </div>
+        <div class="col-xs-12" ng-show="search.cardData.cards.length">
+            <div class="col-xs-12">
+                <h3>{{search.deckData.currentDeck.playerClass}} Cards</h3>
+            </div>
+            <div class="col-xs-6 col-sm-4" ng-repeat="card in search.cardData.cards | orderBy: 'cost' | class:search.deckData.currentDeck.playerClass | set:search.form.set | filter: search.form.searchQuery">
+                <hearthstone-card card="card" ng-click="search.addCard(card)"></hearthstone-card>
+            </div>
+        </div>
+
+        <div class="col-xs-12" ng-show="search.cardData.cards.length">
+            <div class="col-xs-12">
+                <h3>Neutral Cards</h3>
+            </div>
+            <div class="col-xs-6 col-sm-4" ng-repeat="card in search.cardData.cards | orderBy: 'cost' | class:'Neutral' | set:search.form.set | filter: search.form.searchQuery">
+                <hearthstone-card card="card" ng-click="search.addCard(card)"></hearthstone-card>
+            </div>
+        </div>
+
+    </div>
+</div>

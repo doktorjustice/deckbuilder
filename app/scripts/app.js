@@ -2,25 +2,93 @@
 
 (function(){
 
-    var firebaseRef = new Firebase('https://deckstat.firebaseio.com/');
+     /**
+      * Main module of the app
+      * @type {angular module}
+      */
+    var app = angular.module('hearthstoneApp', 
+        [
+        'ngRoute',
+        'firebase'
+        ]);
 
-    var app = angular.module('hearthstoneApp', ['ngRoute', 'decks']);
-
-
-    app.config(function ($routeProvider) {
+    /**
+     * Config function of the app for routing
+     */
+    app.config(['$routeProvider', function ($routeProvider) {
+        
         $routeProvider
         .when('/', {
-            templateUrl: 'views/main.html',
-            controller: 'MainCtrl',
-            controllerAs: 'main'
+            templateUrl: 'views/decklist.html',
+            controller: 'DeckListCtrl',
+            controllerAs: 'decklist'
+        })
+        .when('/create', {
+            templateUrl: 'views/create.html',
+            controller: 'DeckCreateCtrl',
+            controllerAs: 'create'
+        })
+        .when('/search', {
+            templateUrl: 'views/search.html',
+            controller: 'SearchCtrl',
+            controllerAs: 'search'
+        })
+        .when('/deck', {
+            templateUrl: 'views/deck.html',
+            controller: 'DeckOverviewCtrl',
+            controllerAs: 'overview'
         })
         .otherwise({
             redirectTo: '/'
         });
-    })
+
+    }]);
 
 
-    app.factory('apiService', ['$http', function ($http){
+    // SERVICES
+    
+    /**
+     * Service for Firebase connection and data handling
+     * @return {singleton object}           
+     */
+    app.factory('firebaseService', ['$firebaseArray', '$firebaseObject', function ($firebaseArray, $firebaseObject) {
+
+        var obj = {};
+
+        var ref = new Firebase('https://hsdeck.firebaseio.com');
+
+        obj.decks = $firebaseArray(ref.child('/decks'));
+        obj.cardIndex = $firebaseObject(ref.child('/cards'));
+
+        obj.saveNewDeck = function (newData) {
+
+            return obj.decks.$add(newData)
+        }
+
+        obj.saveEditedDeck = function (deck) {
+
+            return obj.decks.$save(deck)
+        }
+
+        obj.getRecord = function (key) {
+
+            return obj.decks.$getRecord(key)
+        }
+
+        obj.addCards = function (card) {
+
+            return obj.cardIndex.$add()
+        }
+
+
+        return obj;
+    }])
+
+    /**
+     * Service for commmucation w/ Heartstone API
+     * @return {service object}        
+     */
+    app.factory('apiService', ['$http', function ($http) {
         
         var baseURL = "https://omgvamp-hearthstone-v1.p.mashape.com/"
         var headers = {'X-Mashape-Key': "D94SomjgvWmshNYKwkSCY7SDlQyVp1BA1i5jsnvOD76f0PaOxG"};
@@ -64,6 +132,7 @@
             }) 
         }
 
+
         return {
             getGeneralInfo: getGeneralInfo,
             getCardsByClass: getCardsByClass,
@@ -72,14 +141,14 @@
     }])
 
 
-    app.factory('cardData', ['apiService', function (apiService) {
+    app.factory('cardData', ['apiService', '$q', function (apiService, $q) {
 
-        var data = {};
+        var cardData = {};
 
-        data.cards = []; 
-        data.types = []; 
-        data.classes = [];
-        data.sets = [
+        cardData.cards = []; 
+        cardData.types = []; 
+        cardData.classes = [];
+        cardData.sets = [
             "Basic",
             "Classic",
             "Naxxramas",
@@ -87,144 +156,297 @@
             "The Grand Tournament",
             "The League of Explorers"
         ];
-        data.isNeutralListLoaded = false;
-        data.classesLoaded = [];
 
+
+        /**
+         * Load basic information from Hearthstone API
+         * and populate player class and card types arrays.
+         */
         apiService.getGeneralInfo()
         .then(function (response) {
 
-            data.classes = response.data.classes;
-            data.types = response.data.types;
+            cardData.classes = response.data.classes;
+            cardData.types = response.data.types;
 
         })
         .catch(function (error) {
-
             console.error(error);
-
         });
 
-        //Check if a given class' cardlist is already loaded
-        var checkClassLoadState = function (newClass) {
 
-            var loaded = false; 
+        /**
+         * Get cards from Hearthstone API for selected class and neutrals
+         * @param  {string} playerClass Selected player class
+         * @return {none}             
+         */
+        cardData.fetchCards = function (playerClass) {
 
-            angular.forEach(data.classesLoaded, function (thisClass) {
+            // Empty cards array 
+            cardData.cards = [];
 
-                if (newClass == thisClass) {
+            return $q.resolve(
+                $q.all([ apiService.getCardsByClass(playerClass), apiService.getCardsByClass('Neutral') ])
+                .then(function (response) {
 
-                    loaded = true;
-                }
+                    cardData.cards = response[0].data.concat(response[1].data);
+                })
+            )
+        }
+
+
+        /**
+         * Modify deckCount number for any given card in the cards array
+         * @param  {object} thisCard  The card to find and update
+         * @param  {number} increment Should be -1 or 1
+         * @return {none}           
+         */
+        cardData.updateCardDeckCount = function (thisCard) {
+
+            var whichCard = cardData.cards.find(function (card, index, array) {
+
+                return card.cardId == thisCard.cardId;
             })
 
-            return loaded;
-        }
+            if (whichCard) {
 
-        return {
-            data: data,
-            checkClassLoadState: checkClassLoadState
-        }
+                whichCard.deckCount = thisCard.deckCount;
 
-    }])
+            } else {
 
-
-    app.factory('deckData', [function(){
-        
-        var deckInfo = {};
-        deckInfo.counter = 0;
-
-        var cards = [];
-        var deckClass = '';
-
-        var addCard = function (card) {
-            cards.push(card);
-            deckInfo.counter += 1;
-            console.log(deckInfo.counter);
-        }
-
-        return {
-            cards: cards,
-            addCard: addCard,
-            deckClass: deckClass,
-            deckInfo: deckInfo
-        };
-    }])
-
-
-    app.controller('MainCtrl', ['cardData', 'deckData', 'apiService', function (cardData, deckData, apiService) {
-
-        var vm = this;
-
-        //Bind card data service
-        vm.data = cardData.data;
-
-        //Bind deck data service
-        vm.deck = deckData.cards;
-
-        //Set form initial values
-        vm.form = {};
-        vm.form.set = "Basic";
-
-        //Set form to the class if it was selected earlier
-        vm.form.class = deckData.deckClass;
-
-        vm.getCards = function (playerClass) {
-
-            //Save the class into deck service
-            deckData.deckClass = playerClass;
-
-            var loaded = cardData.checkClassLoadState(playerClass);
-
-            console.log(playerClass + ' is loaded: ' + loaded);
-
-            //Check if the class is already loaded
-            if (!loaded) {
-
-                //Fetch the cards of the chosen class
-                apiService.getCardsByClass(playerClass)
-
-                .then(function (response) {
-
-                    //Concat card array with new cards
-                    vm.data.cards = vm.data.cards.concat(response.data);
-
-                    //Add current class to the loaded list
-                    vm.data.classesLoaded.push(playerClass);
-
-                    //Fetch Neutral cards if they aren't loaded yet
-                    if (!vm.data.isNeutralListLoaded) {
-
-                        return apiService.getCardsByClass('Neutral');
-                    }
-                })
-                .then(function (response) {
-
-                    if (response) {
-
-                        //Concat card array with new cards
-                        vm.data.cards = vm.data.cards.concat(response.data);
-
-                        //Indicate that Neutral cards are loaded
-                        vm.data.isNeutralListLoaded = true;
-                    }
-                })
-                .catch(function (error) {
-                    console.error(error);
-                });
+                console.error("Cannot find card!");
             }
         }
 
-    }]);
+
+        return cardData;
+    }])
 
 
-    app.controller('CardsCtrl', ['deckData', function (deckData) {
+    /**
+     * Service for decks and the currently edited deck.
+     * @param  {service} firebaseService Service for Firebase operations
+     * @param  {service} $location Built in AngularJS service
+     * @return {object}                 Singleton object with the service methods and properties
+     */
+    app.factory('deckData', ['firebaseService', '$location', function (firebaseService, $location) {
+
+        var deckData = {};
+
+        deckData.decks = firebaseService.decks;
+        deckData.currentDeck = {};
+
+
+        deckData.generateDeckName = function (className) {
+
+            var date = new Date();
+            var year = date.getFullYear();
+            var month = date.getMonth() + 1;
+            var day = date.getDate();
+
+            var name = className + ' / ' + year + '-' + month + '-' + day;
+
+            return name;
+        }
+
+
+        deckData.createDeck = function (deckName, playerClass, cards) {
+
+            var newDeck = {
+                deckName: deckName, 
+                playerClass: playerClass,
+                cards: cards || [],
+            };
+
+            firebaseService.saveNewDeck(newDeck)
+            .then(function (response) {
+
+                deckData.editDeck(response.key());
+            })
+            .catch(function (error) {
+
+                console.error(error);
+            });
+        }
+
+
+        deckData.editDeck = function (key) {
+
+            deckData.currentDeck = firebaseService.getRecord(key);
+            $location.path("/search");
+        }
+
+
+        deckData.saveDeck = function (deck) {
+
+            firebaseService.saveEditedDeck(deck)
+            .catch(function (error) {
+                console.error(error);
+            })
+        }
+
+
+        deckData.addCardToCurrentDeck = function (newCard) {
+
+            deckData.currentDeck.cards = deckData.currentDeck.cards || [];
+
+            var deckCardFound = deckData.currentDeck.cards.find(function (card, index, array) {
+
+                return card.cardId == newCard.cardId;
+            })
+
+
+            if (deckCardFound) {
+
+                deckCardFound.deckCount += 1;
+
+            } else {
+     
+                deckData.currentDeck.cards.push(newCard);
+                newCard.deckCount = 1;
+            }
+
+
+            deckData.currentDeck.counter = updateDeckCounter(deckData.currentDeck.cards);
+
+            deckData.saveDeck(deckData.currentDeck);
+
+            return deckCardFound;
+        }
+
+
+        deckData.removeCardFromCurrentDeck = function (deckCard) {
+
+            deckCard.deckCount -= 1;
+
+            if (deckCard.deckCount == 0) {
+
+                var index = deckData.currentDeck.cards.indexOf(deckCard);
+                deckData.currentDeck.cards.splice(index, 1);
+            }
+
+            deckData.currentDeck.counter = updateDeckCounter(deckData.currentDeck.cards);
+
+            deckData.saveDeck(deckData.currentDeck);
+        }
+
+
+        var updateDeckCounter = function (deck) {
+
+            var counter = 0;
+
+            if (deck.length) {
+
+                angular.forEach(deck, function (card) {
+
+                    counter += card.deckCount;
+                })
+            }
+
+            return counter;
+        }
+
+
+        return deckData;
+    }])
+
+
+    //CONTROLLERS
+
+
+    app.controller('DeckOverviewCtrl', ['deckData', function (deckData) {
+
+        var vm = this;
+        vm.deckData = deckData;
+
+    }])
+
+    
+    app.controller('DeckListCtrl', ['deckData', function (deckData) {
+
+        var vm = this;
+        vm.deckData = deckData;
+
+    }])
+
+
+    app.controller('DeckCreateCtrl', ['cardData', 'deckData', function (cardData, deckData) {
+        
+        var vm = this;
+        vm.deckData = deckData;
+        vm.cardData = cardData;
+       
+        vm.form = {};
+
+        vm.addName = function () {
+
+            vm.form.deckName = deckData.generateDeckName(vm.form.class);
+        }
+    }])
+
+
+    app.controller('SearchCtrl', ['cardData', 'deckData', 'apiService', function (cardData, deckData, apiService) {
 
         var vm = this;
 
-        vm.addCardToDeck = function (card) {
+        vm.cardData = cardData;
+        vm.deckData = deckData;
 
-            deckData.addCard(card);
+        vm.form = {};
+        vm.form.set = "Basic";
+
+        cardData.fetchCards(deckData.currentDeck.playerClass)
+        .then(function () {
+
+            if (deckData.currentDeck.length) {
+                
+                deckData.currentDeck.cards.forEach(function (deckCard,index,array) {
+
+                    cardData.updateCardDeckCount(deckCard);
+                })
+            }
+        })
+        .catch(function (error) {
+            console.error(error);
+        });
+
+
+        /**
+         * Add card from card pool to deck and update deck count in card pool
+         * @param {object} card The card to add to deck
+         */
+        vm.addCard = function (card) {
+
+            // Get back the new card in the deck
+            var newCard = deckData.addCardToCurrentDeck(card);
+
+            if (newCard) {
+
+                // Update the card  in pool with deck count
+                // if it was already added before
+                cardData.updateCardDeckCount(newCard);
+            }
+        }
+
+        /**
+         * Remove card from deck and update deck count in card pool
+         * @param  {object} card The card to remove
+         * @return {none}      
+         */
+        vm.removeCard = function (card) {
+
+            deckData.removeCardFromCurrentDeck(card);
+            cardData.updateCardDeckCount(card);
         }
     }]);
+
+
+    app.controller('CardCtrl', ['deckData', function (deckData) {
+
+
+    }]);
+
+
+    //FILTERS
 
 
     app.filter('class', function () {
@@ -233,6 +455,8 @@
             cardArray = cardArray || [];
             var filteredCardArray = [];
 
+            // Filter out Promotion and Hero cards, where playerClass is
+            // missing add 'Neutral' as class
             angular.forEach(cardArray, function (card) {
 
                 if (card.cardSet !== 'Promotion' && card.type !== 'Hero') {
@@ -243,6 +467,7 @@
 
             });
 
+            // If player class is added then filter out other classes
             if (className) {
 
                 var newFilteredArray = [];
@@ -299,10 +524,13 @@
     })
 
 
+    // DIRECTIVES
+    
+
     app.directive('hearthstoneCard', [function () {
         
         var link = function (scope, element, attrs) {
-
+            //...
         }
 
 
@@ -311,9 +539,9 @@
             scope: {
                 card: '=',
             },
-            templateUrl: 'views/card.html',
-            controller: 'CardsCtrl',
-            controllerAs: 'cards',
+            templateUrl: 'partials/card.html',
+            controller: 'CardCtrl',
+            controllerAs: 'cardCtrl',
             link: link
         }
     }])
