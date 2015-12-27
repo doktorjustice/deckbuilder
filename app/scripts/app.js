@@ -272,6 +272,9 @@
         deckData.editDeck = function (key) {
 
             deckData.currentDeck = firebaseService.getRecord(key);
+            deckData.currentDeck.cards = deckData.currentDeck.cards || [];
+            updateMannaCurve();
+
             $location.path("/search");
         }
 
@@ -289,7 +292,7 @@
 
             deckData.currentDeck.cards = deckData.currentDeck.cards || [];
 
-            var deckCardFound = deckData.currentDeck.cards.find(function (card, index, array) {
+            var deckCardFound = deckData.currentDeck.cards.find( function (card, index, array) {
 
                 return card.cardId == newCard.cardId;
             })
@@ -307,6 +310,8 @@
 
 
             deckData.currentDeck.counter = updateDeckCounter(deckData.currentDeck.cards);
+
+            updateMannaCurve();
 
             deckData.saveDeck(deckData.currentDeck);
 
@@ -326,6 +331,8 @@
 
             deckData.currentDeck.counter = updateDeckCounter(deckData.currentDeck.cards);
 
+            updateMannaCurve();
+            
             deckData.saveDeck(deckData.currentDeck);
         }
 
@@ -343,6 +350,18 @@
             }
 
             return counter;
+        }
+
+        var updateMannaCurve = function () {
+
+            deckData.currentDeck.manaCurve = {};
+
+            deckData.currentDeck.cards.forEach(function (card) {                
+
+                deckData.currentDeck.manaCurve[card.cost] = deckData.currentDeck.manaCurve[card.cost] + card.deckCount || card.deckCount;
+            })
+            
+            console.log(deckData.currentDeck.manaCurve);
         }
 
 
@@ -397,8 +416,8 @@
         cardData.fetchCards(deckData.currentDeck.playerClass)
         .then(function () {
 
-            if (deckData.currentDeck.length) {
-                
+            if (deckData.currentDeck.cards.length) {
+
                 deckData.currentDeck.cards.forEach(function (deckCard,index,array) {
 
                     cardData.updateCardDeckCount(deckCard);
@@ -416,14 +435,28 @@
          */
         vm.addCard = function (card) {
 
-            // Get back the new card in the deck
-            var newCard = deckData.addCardToCurrentDeck(card);
+            card.deckCount = card.deckCount || 0;
+            
+            // Check deck limits before adding card
+            if (deckData.currentDeck.counter < 30 && card.deckCount < 2) {
 
-            if (newCard) {
+                // Add and return the new card in the deck if it was already added
+                var newCard = deckData.addCardToCurrentDeck(card);
 
-                // Update the card  in pool with deck count
-                // if it was already added before
-                cardData.updateCardDeckCount(newCard);
+                if (newCard) {
+
+                    // Update the card  in pool with deck count
+                    // if it was already added before
+                    cardData.updateCardDeckCount(newCard);
+                }
+
+            } else if (deckData.currentDeck.counter = 30) {
+
+                console.log("Deck is full!")
+                
+            } else {
+
+                console.log("You already added two of this card!")
             }
         }
 
@@ -442,6 +475,7 @@
 
     app.controller('CardCtrl', ['deckData', function (deckData) {
 
+        //..
 
     }]);
 
