@@ -9,6 +9,7 @@
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="../bower_components/chartist/dist/chartist.min.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -40,7 +41,7 @@
 
             <ul class="nav navbar-nav">
               <li><a ng-href="#/search">Search</a></li>
-              <li><a ng-href="#/deck">Deck</a></li>
+              <li><a ng-href="#/stats">Deck stats</a></li>
             </ul>
           </div>
         </div>
@@ -65,11 +66,24 @@
     <script src="../bower_components/angular-route/angular-route.js"></script>
     <script src="../bower_components/firebase/firebase.js"></script>
     <script src="../bower_components/angularfire/dist/angularfire.js"></script>
+    <script src="../bower_components/chartist/dist/chartist.min.js"></script>
+    <script src="../bower_components/angular-chartist.js/dist/angular-chartist.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
+        <script src="scripts/shared/app.config.js"></script>
+        <script src="scripts/shared/app.filters.js"></script>
+        <script src="scripts/shared/card.directive.js"></script>
+        <script src="scripts/deckbuilder/firebase.service.js"></script>
+        <script src="scripts/cardpool/cardapi.service.js"></script>
+        <script src="scripts/cardpool/carddata.service.js"></script>
+        <script src="scripts/deckbuilder/deckdata.service.js"></script>
+        <script src="scripts/deckbuilder/dashboard.controller.js"></script>
+        <script src="scripts/deckbuilder/deckcreate.controller.js"></script>
+        <script src="scripts/deckbuilder/deckeditor.controller.js"></script>
+        <script src="scripts/deckstats/deckstats.controller.js"></script>
         <!-- endbuild -->
 </body>
 </html>

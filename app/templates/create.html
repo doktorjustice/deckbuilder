@@ -1,0 +1,11 @@
+<div class="row">
+	
+	<div class="col-xs-12">
+		<h3>Choose your hero!</h3>
+	</div>
+
+	<div class="col-xs-3" ng-repeat="hero in create.cardPool.heroes">
+		<hearthstone-card card="hero" ng-click="create.setHero(hero)"></hearthstone-card>
+	</div>
+
+</div>

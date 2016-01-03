@@ -1,0 +1,69 @@
+<div class="row">
+    
+    <div class="col-xs-12 col-md-6">
+
+        <div class="jumbotron col-xs-12">
+            <h2>Your deck<br>
+                <small>{{editor.deckData.currentDeck.counter}} / 30</small>
+            </h2>
+        </div>
+
+        <div>
+            <div class="col-xs-6" ng-repeat="card in editor.deckData.currentDeck.cards | orderBy: 'cost'">
+                <hearthstone-card card="card" ng-click="editor.removeCard(card)"></hearthstone-card>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xs-12 col-md-6">
+
+        <div class="col-xs-12">
+            <h2>Search for cards</h2>
+            <form>
+                <div class="form-group">
+                    <label for="searchField">Filter:</label>
+                    <input type="text" placeholder="Search" class="form-control" ng-model="editor.form.searchQuery">
+                </div>
+            </form>
+        </div>
+
+        <div ng-hide="editor.cardPool.cards.length">
+            Retrieving card data...
+        </div>
+
+        <div ng-show="editor.cardPool.cards.length">
+            <div class="col-xs-12">
+                <h3>{{editor.deckData.currentDeck.playerClass}} Cards</h3>
+            </div>
+            <div 
+                class="col-xs-6" 
+                ng-repeat="card in editor.cardPool.cards | 
+                    orderBy: 'cost' | 
+                    class: editor.deckData.currentDeck.playerClass | 
+                    set: editor.form.set | 
+                    type: editor.cardPool.types | 
+                    filter: editor.form.searchQuery">
+
+                <hearthstone-card card="card" ng-click="editor.addCard(card)"></hearthstone-card>
+            </div>
+        </div>
+
+        <div ng-show="editor.cardPool.cards.length">
+            <div class="col-xs-12">
+                <h3>Neutral Cards</h3>
+            </div>
+            <div 
+                class="col-xs-6" 
+                ng-repeat="card in editor.cardPool.cards | 
+                    orderBy: 'cost' | 
+                    class:'Neutral' | 
+                    set: editor.form.set | 
+                    type: editor.cardPool.types | 
+                    filter: editor.form.searchQuery">
+
+                <hearthstone-card card="card" ng-click="editor.addCard(card)"></hearthstone-card>
+            </div>
+        </div>
+    </div>
+
+</div>
