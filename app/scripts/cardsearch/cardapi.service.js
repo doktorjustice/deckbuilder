@@ -8,14 +8,14 @@
 
 	
 	angular
-		.module('Cardpool')
-		.factory('cardApiService', cardApiService)
+		.module('Cards')
+		.factory('cardApi', cardApi)
 		
 
-	cardApiService.$inject = ['$http'];
+	cardApi.$inject = ['$http', '$q'];
 
 
-	function cardApiService ($http) {
+	function cardApi ($http, $q) {
 	    
 	    var baseURL = "https://omgvamp-hearthstone-v1.p.mashape.com/"
 	    var headers = {'X-Mashape-Key': "D94SomjgvWmshNYKwkSCY7SDlQyVp1BA1i5jsnvOD76f0PaOxG"};
@@ -25,7 +25,7 @@
 	    }
 
 
-	    var getGeneralInfo = function () {
+	    function getGeneralInfo () {
 
 	        url = baseURL + "info";
 
@@ -37,7 +37,7 @@
 	    };
 
 
-	    var getCardsByClass = function (playerClass) {
+	    function getCardsByClass (playerClass) {
 
 	        url = baseURL + "cards/classes/" + playerClass; 
 	        
@@ -49,7 +49,8 @@
 	        })   
 	    }
 
-	    var getCardsByType = function (type) {
+
+	    function getCardsByType (type) {
 
 	    	url = baseURL + "cards/types/" + type;
 	    	
@@ -61,16 +62,10 @@
 	    	}) 
 	    }
 
-	    var getAllCards  = function() {
 
-	        url = baseURL + "cards";
+	    function getAllCards (array) {
 
-	        return $http({
-	            method: "GET",
-	            url: url,
-	            headers: headers,
-	            params: params
-	        }) 
+	    	return $q.all(array.map(getCardsByClass));
 	    }
 
 

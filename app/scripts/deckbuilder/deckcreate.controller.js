@@ -7,14 +7,14 @@
 		.controller('DeckCreateCtrl', DeckCreateCtrl);
 
 
-	DeckCreateCtrl.$inject = ['cardPool', 'cardApiService', 'deckData']
+	DeckCreateCtrl.$inject = ['$location', 'cardData', 'cardApi', 'deckData']
 
 
-	function DeckCreateCtrl (cardPool, cardApiService, deckData) {
+	function DeckCreateCtrl ($location, cardData, cardApi, deckData) {
 	    
 	    var vm = this;
 	    vm.deckData = deckData;
-	    vm.cardPool = cardPool;
+	    vm.cardData = cardData;
 	   
 	    vm.form = {};
 
@@ -24,16 +24,15 @@
 
 	    	vm.form.deckName = deckData.generateDeckName(hero.name);
 
-	    	vm.deckData.createDeck(vm.form.deckName, vm.form.hero)
+	    	vm.deckData.createDeck(vm.form.deckName, vm.form.hero);
+	    	$location.path('/editor');
 	    }
 
-	    /**
-	     * Get hero cards from API
-	     */
-	    cardApiService.getCardsByType('Hero')
+
+	    cardApi.getCardsByType('Hero')
 	    .then(function (response) {
 
-	    	vm.cardPool.heroes = response.data;
+	    	vm.cardData.heroes = response.data;
 
 	    })
 	    .catch(function (error) {

@@ -29,7 +29,12 @@
         .when('/stats', {
             templateUrl: 'templates/stats.html',
             controller: 'StatsOverviewCtrl',
-            controllerAs: 'overview'
+            controllerAs: 'stats'
+        })
+        .when('/search', {
+            templateUrl: 'templates/search.html',
+            controller: 'CardSearchCtrl',
+            controllerAs: 'search'
         })
         .otherwise({
             redirectTo: '/dashboard'

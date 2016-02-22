@@ -1,10 +1,6 @@
 'use strict';
 
-/**
- * Handle data and modification of currently selected deck
- * @return {none}
- */
-(function(){
+(function (){
 
 
 	angular
@@ -12,153 +8,117 @@
 		.factory('deckData', deckData);
 
 
-		deckData.$inject = ['firebaseService', '$location'];
+	deckData.$inject = ['$location', 'firebaseService', 'deckStatsService'];
 
 
-		/**
-		 * Service for decks and the currently edited deck.
-		 * @param  {service} firebaseService Service for Firebase operations
-		 * @param  {service} $location Built in AngularJS service
-		 * @return {object}                 Singleton object with the service methods and properties
-		 */
-		function deckData (firebaseService, $location) {
+	function deckData ($location, firebaseService, deckStatsService) {
 
-		    var deckData = {};
-
-		    deckData.decks = firebaseService.decks;
-		    deckData.currentDeck = {};
-
-
-		    deckData.generateDeckName = function (className) {
-
-		        var date = new Date();
-		        var year = date.getFullYear();
-		        var month = date.getMonth() + 1;
-		        var day = date.getDate();
-
-		        var name = className + ' / ' + year + '-' + month + '-' + day;
-
-		        return name;
-		    }
+	    return deckData = {
+	    	decks : firebaseService.decks,
+	    	currentDeck : {},
+	    	generateDeckName : generateDeckName,
+	    	createDeck : createDeck,
+	    	loadDeck : loadDeck,
+	    	saveDeck : saveDeck,
+	    	addCardToCurrentDeck : addCardToCurrentDeck,
+	    	removeCardFromCurrentDeck : removeCardFromCurrentDeck,
+	    };
 
 
-		    deckData.createDeck = function (deckName, hero, cards) {
+	    function generateDeckName (className) {
 
-		        var newDeck = {
-		            deckName: deckName,
-		            hero: hero,
-		            playerClass: hero.playerClass,
-		            cards: cards || [],
-		        };
+	        var date = new Date();
+	        var year = date.getFullYear();
+	        var month = date.getMonth() + 1;
+	        var day = date.getDate();
 
-		        firebaseService.saveNewDeck(newDeck)
-		        .then(function (response) {
+	        var name = className + ' / ' + year + '-' + month + '-' + day;
 
-		            deckData.editDeck(response.key());
-		        })
-		        .catch(function (error) {
-
-		            console.error(error);
-		        });
-		    }
+	        return name;
+	    }
 
 
-		    deckData.editDeck = function (key) {
+	    function createDeck (deckName, hero, cards) {
 
-		        deckData.currentDeck = firebaseService.getDeck(key);
-		        deckData.currentDeck.cards = deckData.currentDeck.cards || [];
-		        updateMannaCurve();
+	        var newDeck = {
+	            deckName: deckName,
+	            hero: hero,
+	            playerClass: hero.playerClass,
+	            cards: cards || [],
+	        };
 
-		        $location.path("/editor");
-		    }
+	        firebaseService.saveNewDeck(newDeck)
+	        .then(function (response) {
 
+	            deckData.loadDeck(response.key());
+	        })
+	        .catch(function (error) {
 
-		    deckData.saveDeck = function (deck) {
-
-		        firebaseService.saveEditedDeck(deck)
-		        .catch(function (error) {
-		            console.error(error);
-		        })
-		    }
-
-
-		    deckData.addCardToCurrentDeck = function (newCard) {
-
-		        deckData.currentDeck.cards = deckData.currentDeck.cards || [];
-
-		        var deckCardFound = deckData.currentDeck.cards.find( function (card, index, array) {
-
-		            return card.cardId == newCard.cardId;
-		        })
+	            console.error(error);
+	        });
+	    }
 
 
-		        if (deckCardFound) {
+	    function saveDeck (deck) {
 
-		            deckCardFound.deckCount += 1;
-
-		        } else {
-		 
-		            deckData.currentDeck.cards.push(newCard);
-		            newCard.deckCount = 1;
-		        }
+	        firebaseService.saveEditedDeck(deck)
+	        .catch(function (error) {
+	            console.error(error);
+	        })
+	    }
 
 
-		        deckData.currentDeck.counter = updateDeckCounter(deckData.currentDeck.cards);
+	    function addCardToCurrentDeck (newCard) {
 
-		        updateMannaCurve();
+	        deckData.currentDeck.cards = deckData.currentDeck.cards || [];
 
-		        deckData.saveDeck(deckData.currentDeck);
+	        var deckCardFound = deckData.currentDeck.cards.find( function (card, index, array) {
 
-		        return deckCardFound;
-		    }
-
-
-		    deckData.removeCardFromCurrentDeck = function (deckCard) {
-
-		        deckCard.deckCount -= 1;
-
-		        if (deckCard.deckCount == 0) {
-
-		            var index = deckData.currentDeck.cards.indexOf(deckCard);
-		            deckData.currentDeck.cards.splice(index, 1);
-		        }
-
-		        deckData.currentDeck.counter = updateDeckCounter(deckData.currentDeck.cards);
-
-		        updateMannaCurve();
-		        
-		        deckData.saveDeck(deckData.currentDeck);
-		    }
+	            return card.cardId == newCard.cardId;
+	        })
 
 
-		    var updateDeckCounter = function (deck) {
+	        if (deckCardFound) {
 
-		        var counter = 0;
+	            deckCardFound.deckCount += 1;
 
-		        if (deck.length) {
-
-		            angular.forEach(deck, function (card) {
-
-		                counter += card.deckCount;
-		            })
-		        }
-
-		        return counter;
-		    }
-
-		    var updateMannaCurve = function () {
-
-		        deckData.currentDeck.manaCurve = {};
-
-		        deckData.currentDeck.cards.forEach(function (card) {                
-
-		            deckData.currentDeck.manaCurve[card.cost] = deckData.currentDeck.manaCurve[card.cost] + card.deckCount || card.deckCount;
-		        })
-		        
-		    }
+	        } else {
+	 
+	            deckData.currentDeck.cards.push(newCard);
+	            newCard.deckCount = 1;
+	        }
 
 
-		    return deckData;
+	        deckData.currentDeck.stats = deckStatsService.calcDeckStats(deckData.currentDeck.cards);
 
-		}
+	        deckData.saveDeck(deckData.currentDeck);
+
+	        return deckCardFound;
+	    }
+
+
+	    function removeCardFromCurrentDeck (deckCard) {
+
+	        deckCard.deckCount -= 1;
+
+	        if (deckCard.deckCount == 0) {
+
+	            var index = deckData.currentDeck.cards.indexOf(deckCard);
+	            deckData.currentDeck.cards.splice(index, 1);
+	        }
+
+	        deckData.currentDeck.stats = deckStatsService.calcDeckStats(deckData.currentDeck.cards);
+	        
+	        deckData.saveDeck(deckData.currentDeck);
+	    }
+
+
+	    function loadDeck (key) {
+
+	    	deckData.currentDeck = firebaseService.getDeck(key);
+	    	deckData.currentDeck.cards = deckData.currentDeck.cards || [];
+	    }
+	    
+	}
+	
 })();

@@ -1,0 +1,26 @@
+<div class="form-group">
+	<div class="checkbox">
+		<label>
+			<input
+				type="checkbox" 
+				ng-model="form[formSection].all"
+				ng-change="section.checkCheckboxes(form, formSection)">
+			
+				<strong>All {{title}}</strong>
+		</label>
+	</div>
+	<a href="" ng-click="section.uncheckCheckboxes(form, formSection)">Select none</a>
+	<hr>
+	<div class="checkbox" ng-repeat="item in section.cardData[formSection]">
+		<label ng-class="{'disabled-label': form[formSection].all}">
+	    	<input 
+	    		type = "checkbox"
+	    		ng-model = "form[formSection][item]"
+				ng-change = "section.updateSearch(form)"
+				ng-disabled = "form[formSection].all"
+				>
+	    	
+	    		{{item}}
+		</label>
+	</div>
+</div>

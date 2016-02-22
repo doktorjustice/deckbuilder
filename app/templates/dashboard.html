@@ -5,8 +5,10 @@
 		<div class="col-xs-8">
 			<h4>{{deck.deckName}}</h4>
 		</div>
+
 		<div class="col-xs-4">
-			<button class="btn btn-primary" ng-click="dashboard.deckData.editDeck(deck.$id)">Edit</button>
+			<button class="btn btn-primary" ng-click="dashboard.showDeckStats(deck.$id)">Stats</button>
+			<button class="btn btn-primary" ng-click="dashboard.editDeck(deck.$id)">Edit</button>
 		</div>
 
 	</div>

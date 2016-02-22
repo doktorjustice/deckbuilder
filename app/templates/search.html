@@ -1,0 +1,21 @@
+<div class="row">
+
+	<search-form></search-form>
+
+</div>
+
+<div class="row">
+
+		<hearthstone-card 
+		    class="col-xs-4 col-sm-3 col-md-2 card" 
+		    card="card"
+		    ng-repeat="card in search.cardData.cards | 
+		    	class: search.cardSearch.criteria.playerClasses |
+		    	set: search.cardSearch.criteria.sets |
+		    	gem: search.cardSearch.criteria.rarities |
+		    	type: search.cardSearch.criteria.types |
+		    	filter: search.cardSearch.criteria.searchQuery"
+		    	>
+		</hearthstone-card>
+		
+</div>

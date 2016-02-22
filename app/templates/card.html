@@ -1,3 +1,8 @@
-<div>
-	<img ng-src="{{card.img}}" width="100%">
+
+<!-- <img id="placeholderImg" src="img/blank_card.jpg" width="100%" class="placeholder">
+ --><img id="card-face" ng-src="{{card.img}}" width="100%" class="card-face">
+	
+<!-- Show deck count when equals 2 -->
+<div id="deckcount" class="card-counter" ng-show="card.deckCount > 0">
+	{{card.deckCount}}
 </div>

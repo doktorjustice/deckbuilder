@@ -8,40 +8,52 @@
 		.controller('EditorCtrl', EditorCtrl)
 
 
-	EditorCtrl.$inject = ['cardPool', 'deckData'];
+	EditorCtrl.$inject = ['cardData', 'deckData', 'cardSearch'];
 
 
-	function EditorCtrl (cardPool, deckData) {
+	function EditorCtrl (cardData, deckData, cardSearch) {
 
 	    var vm = this;
 
-	    vm.cardPool = cardPool;
+	    // Bind service objects
+	    vm.cardData = cardData;
 	    vm.deckData = deckData;
+	    vm.cardSearch = cardSearch;
 
-	    vm.form = {};
-	    vm.form.set = ["Basic"];
+	    // Methods
+	    vm.addCard = addCard;
+	    vm.removeCard = removeCard;
 
-	    cardPool.fetchCards(deckData.currentDeck.playerClass)
-	    .then(function () {
-
-	        if (deckData.currentDeck.cards.length) {
-
-	            deckData.currentDeck.cards.forEach(function (deckCard,index,array) {
-
-	                cardPool.updateCardDeckCount(deckCard);
-	            })
-	        }
+	    //Populate card data and update counts
+	    cardData.preloadCards()
+	    .then(function (response) {
+	    	cardData.cards = response;
+	    	updateDeckCounts(deckData.currentDeck.cards);
 	    })
 	    .catch(function (error) {
-	        console.error(error);
-	    });
+	    	console.error(error);
+	    })
+
+
+	    function updateDeckCounts (deck) {
+	    	
+	    	var x = deck || [];
+
+	    	if (x.length) {
+
+	    		deck.forEach(function (deckCard) {
+
+	    	    	cardData.updateCardDeckCount(deckCard, cardData.cards);
+	    	    })
+	    	}
+	   	}
 
 
 	    /**
 	     * Add card from card pool to deck and update deck count in card pool
 	     * @param {object} card The card to add to deck
 	     */
-	    vm.addCard = function (card) {
+	    function addCard (card) {
 
 	        card.deckCount = card.deckCount || 0;
 	        deckData.currentDeck.counter = deckData.currentDeck.counter || [];
@@ -56,7 +68,7 @@
 
 	                // Update the card in pool with deck count
 	                // if it was already added before
-	                cardPool.updateCardDeckCount(newCard);
+	                cardData.updateCardDeckCount(newCard, cardData.cards);
 	            }
 
 	        } else if (deckData.currentDeck.counter == 30) {
@@ -75,10 +87,10 @@
 	     * @param  {object} card The card to remove
 	     * @return {none}      
 	     */
-	    vm.removeCard = function (card) {
+	    function removeCard (card) {
 
 	        deckData.removeCardFromCurrentDeck(card);
-	        cardPool.updateCardDeckCount(card);
+	        cardData.updateCardDeckCount(card, cardData.cards);
 	    }
 	}
 

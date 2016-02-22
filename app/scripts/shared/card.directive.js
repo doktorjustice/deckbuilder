@@ -17,11 +17,20 @@
 	        templateUrl: 'templates/card.html',
 	        link: link
 	    }
+	}
 
-	    var link = function (scope, element, attrs) {
-	        //...
-	    }
+	function link (scope, element, attrs) {
 
+		// var placeholder = element[0].children[0];
+		// var cardFace = element[0].children[1];
+
+		// cardFace.addEventListener('load', imageLoaded)
+
+		// function imageLoaded () {
+
+		// 	angular.element(placeholder).css({'display': 'none'});
+		// 	angular.element(cardFace).css({'display': 'block'});
+		// }
 	}
 
 })();

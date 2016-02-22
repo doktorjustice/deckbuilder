@@ -1,0 +1,16 @@
+<div class="col-xs-12">
+
+	<form>
+		<form-section class="col-xs-4" form="searchForm.form" form-section="playerClasses" title="Classes" ng-if="!searchForm.fixedClass"></form-section>
+		<form-section class="col-xs-4" form="searchForm.form" form-section="sets" title="Sets"></form-section>
+		<form-section class="col-xs-4" form="searchForm.form" form-section="rarities" title="Rareness"></form-section>
+		<form-section class="col-xs-4" form="searchForm.form" form-section="types" title="Types"></form-section>
+
+		<div class="form-group col-xs-12">
+			<h4>Filter</h4>
+			<div class="form-group">
+			    <input type="text" placeholder="Type in anything..." class="form-control" ng-model="searchForm.cardSearch.criteria.searchQuery" ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 300, 'blur': 0 } }">
+			</div>
+		</div>	
+	</form>	
+</div>

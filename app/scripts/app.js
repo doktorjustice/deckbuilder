@@ -8,18 +8,18 @@
         'AppCore',
 
         // Feature modules
-        'Cardpool',
+        'Cards',
         'Deckbuilder',
-        'Deckstats',]
+        'deckStats',]
     );
     
     
     angular.module('AppCore', ['ngRoute']);
 
-    angular.module('Cardpool', []);
+    angular.module('Cards', []);
 
     angular.module('Deckbuilder', ['firebase']); 
 
-    angular.module('Deckstats', ['angular-chartist']);
+    angular.module('deckStats', ['googlechart']);
     
 })();

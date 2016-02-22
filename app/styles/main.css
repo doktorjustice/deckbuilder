@@ -30,6 +30,10 @@ body {
   padding-bottom: 19px;
 }
 
+.disabled-label {
+  color: #aaa;
+}
+
 /* Custom page footer */
 .footer {
   padding-top: 19px;

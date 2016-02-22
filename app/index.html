@@ -9,11 +9,11 @@
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css" />
-    <link rel="stylesheet" href="../bower_components/chartist/dist/chartist.min.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/app.css">
     <!-- endbuild -->
   </head>
   <body ng-app="hearthstoneApp">
@@ -23,33 +23,11 @@
 
     <!-- Add your site or application content here -->
     <div class="header">
-      <div class="navbar navbar-default" role="navigation">
-        <div class="container">
-          <div class="navbar-header">
-
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#js-navbar-collapse">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-
-            <a class="navbar-brand" href="#/">Hearthstone Decks</a>
-          </div>
-
-          <div class="collapse navbar-collapse" id="js-navbar-collapse">
-
-            <ul class="nav navbar-nav">
-              <li><a ng-href="#/search">Search</a></li>
-              <li><a ng-href="#/stats">Deck stats</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
+     <app-navigation></app-navigation>
     </div>
 
     <div class="container content">
-    <div ng-view=""></div>
+      <div ng-view=""></div>
     </div>
 
     <div class="footer">
@@ -66,24 +44,32 @@
     <script src="../bower_components/angular-route/angular-route.js"></script>
     <script src="../bower_components/firebase/firebase.js"></script>
     <script src="../bower_components/angularfire/dist/angularfire.js"></script>
-    <script src="../bower_components/chartist/dist/chartist.min.js"></script>
-    <script src="../bower_components/angular-chartist.js/dist/angular-chartist.js"></script>
+    <script src="../bower_components/angular-google-chart/ng-google-chart.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
-        <!-- build:js({.tmp,app}) scripts/scripts.js -->
-        <script src="scripts/app.js"></script>
-        <script src="scripts/shared/app.config.js"></script>
-        <script src="scripts/shared/app.filters.js"></script>
-        <script src="scripts/shared/card.directive.js"></script>
-        <script src="scripts/deckbuilder/firebase.service.js"></script>
-        <script src="scripts/cardpool/cardapi.service.js"></script>
-        <script src="scripts/cardpool/carddata.service.js"></script>
-        <script src="scripts/deckbuilder/deckdata.service.js"></script>
-        <script src="scripts/deckbuilder/dashboard.controller.js"></script>
-        <script src="scripts/deckbuilder/deckcreate.controller.js"></script>
-        <script src="scripts/deckbuilder/deckeditor.controller.js"></script>
-        <script src="scripts/deckstats/deckstats.controller.js"></script>
-        <!-- endbuild -->
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="scripts/app.js"></script>
+    <script src="scripts/shared/app.config.js"></script>
+    <script src="scripts/shared/app.filters.js"></script>
+    <script src="scripts/shared/card.directive.js"></script>
+    <script src="scripts/shared/navigation.controller.js"></script>
+    <script src="scripts/shared/navigation.directive.js"></script>
+    <script src="scripts/deckbuilder/firebase.service.js"></script>
+    <script src="scripts/cardsearch/cardapi.service.js"></script>
+    <script src="scripts/cardsearch/carddata.service.js"></script>
+    <script src="scripts/cardsearch/cardsearch.controller.js"></script>
+    <script src="scripts/cardsearch/cardsearch.service.js"></script>
+    <script src="scripts/cardsearch/formsection.directive.js"></script>
+    <script src="scripts/cardsearch/formsection.controller.js"></script>
+    <script src="scripts/cardsearch/searchform.directive.js"></script>
+    <script src="scripts/cardsearch/searchform.controller.js"></script>
+    <script src="scripts/deckbuilder/deckdata.service.js"></script>
+    <script src="scripts/deckbuilder/dashboard.controller.js"></script>
+    <script src="scripts/deckbuilder/deckcreate.controller.js"></script>
+    <script src="scripts/deckbuilder/deckeditor.controller.js"></script>
+    <script src="scripts/deckstats/deckstats.controller.js"></script>
+    <script src="scripts/deckstats/deckstats.service.js"></script>
+    <!-- endbuild -->
 </body>
 </html>
