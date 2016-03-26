@@ -1,10 +1,10 @@
-'use strict',
-
 (function () {
+
+	'use strict';
 
 
 	angular
-		.module('Cards')
+		.module('cards')
 		.controller('CardSearchCtrl', CardSearchCtrl)
 
 

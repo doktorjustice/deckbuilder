@@ -1,28 +1,27 @@
-'use strict';
-
 (function () {
+
+	'use strict';
 
 
 	angular
-		.module('Deckbuilder')
+		.module('deckBuilder')
 		.controller('EditorCtrl', EditorCtrl)
 
 
-	EditorCtrl.$inject = ['cardData', 'deckData', 'cardSearch'];
+	EditorCtrl.$inject = ['$scope', 'cardData', 'deckData', 'cardSearch'];
 
 
-	function EditorCtrl (cardData, deckData, cardSearch) {
+	function EditorCtrl ($scope, cardData, deckData, cardSearch) {
 
 	    var vm = this;
 
-	    // Bind service objects
 	    vm.cardData = cardData;
 	    vm.deckData = deckData;
 	    vm.cardSearch = cardSearch;
 
-	    // Methods
 	    vm.addCard = addCard;
 	    vm.removeCard = removeCard;
+
 
 	    //Populate card data and update counts
 	    cardData.preloadCards()
@@ -35,9 +34,21 @@
 	    })
 
 
+	    // Clear deckCount on cards if user changes deck in nav dropdown
+	    $scope.$watch('editor.deckData.currentDeck.$id', function(prev, cur) {
+
+	    	updateDeckCounts(vm.deckData.cards);
+	    })
+
+
 	    function updateDeckCounts (deck) {
 	    	
 	    	var x = deck || [];
+
+	    	cardData.cards.forEach(function(card) {
+
+	    		card.deckCount = 0;
+	    	})
 
 	    	if (x.length) {
 
@@ -48,45 +59,27 @@
 	    	}
 	   	}
 
-
-	    /**
-	     * Add card from card pool to deck and update deck count in card pool
-	     * @param {object} card The card to add to deck
-	     */
+	    
 	    function addCard (card) {
 
 	        card.deckCount = card.deckCount || 0;
-	        deckData.currentDeck.counter = deckData.currentDeck.counter || [];
+	        
+	        try {
 
-	        // Check deck limits before adding card
-	        if (deckData.currentDeck.counter < 30 && card.deckCount != 2) {
+	        	var newCard = deckData.addCardToCurrentDeck(card);
+	        
+	        } catch (error) {
 
-	            // Add and return the new card in the deck if it was already added
-	            var newCard = deckData.addCardToCurrentDeck(card);
+	        	console.error(error);
+	        }
 
-	            if (newCard) {
+	        if (newCard) {
 
-	                // Update the card in pool with deck count
-	                // if it was already added before
-	                cardData.updateCardDeckCount(newCard, cardData.cards);
-	            }
-
-	        } else if (deckData.currentDeck.counter == 30) {
-
-	            console.log("Deck is full!");
-
-	        } else {
-
-	            console.log("You already added two of this card!");
-
+	            cardData.updateCardDeckCount(newCard, cardData.cards);
 	        }
 	    }
 
-	    /**
-	     * Remove card from deck and update deck count in card pool
-	     * @param  {object} card The card to remove
-	     * @return {none}      
-	     */
+	   
 	    function removeCard (card) {
 
 	        deckData.removeCardFromCurrentDeck(card);

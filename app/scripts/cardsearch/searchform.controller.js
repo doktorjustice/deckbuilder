@@ -1,10 +1,10 @@
-'use strict',
-
 (function () {
+
+	'use strict';
 
 
 	angular
-		.module('Cards')
+		.module('cards')
 		.controller('SearchFormCtrl', SearchFormCtrl)
 
 
@@ -39,7 +39,6 @@
 			}
 		};
 
-
 		vm.formSections = {
 			playerClasses: 'Classes',
 			sets: 'Sets',
@@ -47,7 +46,7 @@
 			types: 'Types'
 		}
 
-
+		// vm.fixedClass is injected into the directive attributes
 		initializeForm(vm.fixedClass, vm.form);
 
 

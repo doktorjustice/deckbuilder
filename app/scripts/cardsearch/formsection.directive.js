@@ -1,10 +1,10 @@
-'use strict';
-
 (function () {
+
+	'use strict';
 
 
 	angular
-		.module('Cards')
+		.module('cards')
 		.directive('formSection', formSection)
 
 
@@ -24,6 +24,7 @@
 		}
 	}
 
+	
 	function link (scope, element, attrs) {
 		//...
 	}

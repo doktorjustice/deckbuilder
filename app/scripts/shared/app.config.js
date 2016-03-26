@@ -1,9 +1,10 @@
-'use strict';
-
 (function () {
 
+    'use strict';
+    
+
     angular
-        .module('AppCore')
+        .module('appCore')
         .config(routeConfig);
 
     routeConfig.$inject = ['$routeProvider', '$locationProvider'];

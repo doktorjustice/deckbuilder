@@ -1,14 +1,10 @@
-'use strict';
-
-/**
- * Inreract with Hearthstone card API.
- * @return {none} 
- */
 (function () {
+
+	'use strict';
 
 	
 	angular
-		.module('Cards')
+		.module('cards')
 		.factory('cardApi', cardApi)
 		
 
@@ -17,12 +13,21 @@
 
 	function cardApi ($http, $q) {
 	    
-	    var baseURL = "https://omgvamp-hearthstone-v1.p.mashape.com/"
-	    var headers = {'X-Mashape-Key': "D94SomjgvWmshNYKwkSCY7SDlQyVp1BA1i5jsnvOD76f0PaOxG"};
-	    var url = '';
-	    var params = {
-	        collectible: 1,
-	    }
+	    var baseURL = "https://omgvamp-hearthstone-v1.p.mashape.com/",
+	    	headers = {'X-Mashape-Key': "D94SomjgvWmshNYKwkSCY7SDlQyVp1BA1i5jsnvOD76f0PaOxG"},
+	    	url = '',
+	    	params = {
+	        	collectible: 1,
+	    	};
+
+
+	    return {
+	        getGeneralInfo: getGeneralInfo,
+	        getCardsByClass: getCardsByClass,
+	        getCardsByType: getCardsByType,
+	        getAllCards: getAllCards
+	    };
+
 
 
 	    function getGeneralInfo () {
@@ -67,15 +72,6 @@
 
 	    	return $q.all(array.map(getCardsByClass));
 	    }
-
-
-	    return {
-	        getGeneralInfo: getGeneralInfo,
-	        getCardsByClass: getCardsByClass,
-	        getCardsByType: getCardsByType,
-	        getAllCards: getAllCards
-	    };
-
 	};
 
 })();

@@ -1,12 +1,15 @@
-'use strict';
+(function () {
 
-(function (){
+	'use strict';
+
 
 	angular
-		.module('Cards')
+		.module('cards')
 		.directive('searchForm', searchForm)
 
+	
 	function searchForm () {
+		
 		return {
 			restrict: 'E',
 			scope: {},
@@ -20,6 +23,7 @@
 		}
 	}
 
+	
 	function link (scope, element, attrs) {
 		//...
 	}

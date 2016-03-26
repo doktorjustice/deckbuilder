@@ -1,13 +1,15 @@
-'use strict';
-
 (function () {
 
+	'use strict';
 
+	
 	angular
-		.module('Cards')
+		.module('cards')
 		.controller('FormSectionCtrl', FormSectionCtrl)
 
+
 	FormSectionCtrl.$inject = ['$location', 'cardData', 'cardApi', 'cardSearch'];
+
 
 	function FormSectionCtrl ($location, cardData, cardApi, cardSearch) {
 

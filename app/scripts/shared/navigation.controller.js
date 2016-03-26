@@ -1,17 +1,17 @@
-'use strict';
-
 (function () {
 
+	'use strict';
 
+	
 	angular
-		.module('AppCore')
-		.controller('navigationController', navigationController)
+		.module('appCore')
+		.controller('NavigationController', NavigationController)
 
 
-	navigationController.$inject = ['$rootScope','$location', 'deckData'];
+	NavigationController.$inject = ['$rootScope','$location', 'deckData'];
 
 
-	function navigationController ($rootScope, $location, deckData) {
+	function NavigationController ($rootScope, $location, deckData) {
 
 		var vm = this;
 		vm.loadDeck = deckData.loadDeck;

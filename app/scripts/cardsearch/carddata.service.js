@@ -1,14 +1,10 @@
-'use strict';
-
-/**
- * Handle card pool downloaded from card API
- * @return {none} 
- */
 (function () {
+
+	'use strict';
 
 
 	angular
-		.module('Cards')
+		.module('cards')
 		.factory('cardData', cardData);
 
 
@@ -67,14 +63,18 @@
 			"Legendary"
 		];
 
+		// METHODS
 		cardDataObject.fetchCards = fetchCards;
 		cardDataObject.updateCardDeckCount = updateCardDeckCount;
 		cardDataObject.preloadCards = preloadCards;
 
+
+		// Get all cards data from API before returning service object
 		preloadCards().then(setCards)
 		.catch(function (error) {
 			console.error(error);
 		})
+
 
 		return cardDataObject;
 
@@ -92,10 +92,12 @@
 			}
 		}
 
+
 		function setCards (cards) {
 
 			cardDataObject.cards = cards;
 		}
+
 
 		function fetchCards (input) {
 			
@@ -165,11 +167,6 @@
 		}
 
 
-		/**
-		 * Update deckCount number for any given card in the cards array
-		 * @param  {object} thisCard  The card to find and update
-		 * @return {none}           
-		 */
 		function updateCardDeckCount (thisCard, cardCollection) {
 
 		    var whichCard = cardCollection.find(function (card, index, array) {

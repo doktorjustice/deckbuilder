@@ -1,10 +1,10 @@
-'use strict';
-
 (function () {
 
+	'use strict';
 
+	
 	angular
-		.module('deckStats')
+		.module('deckBuilder')
 		.factory('deckStatsService', deckStatsService)
 
 
@@ -21,14 +21,12 @@
 
 		function calcDeckStats (cards) {
 
-			//... Calculate and return stats for given deck
-			//
 			// 0) Card count - OK
 			// 1) Mana curve - OK
 			// 2) Type distribution - OK
 			// 3) Gem distribution - OK
 			// 4) Neutral/Class cards
-			// 5) Special abilities
+			// 5) Special abilities - OK
 			// 		Taunt
 			// 		Battlecry
 			// 		Deathrattle
@@ -106,6 +104,7 @@
 
 			return data;
 		}
+
 
 		function updateAbilities (cards) {
 

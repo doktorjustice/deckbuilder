@@ -16,6 +16,12 @@ html {
 
 .card {
   overflow: hidden;
+  opacity: 0.85;
+  transition: opacity 0.3s;
+}
+
+.card:hover {
+  opacity: 1;
 }
 
 .card-counter {
@@ -33,10 +39,8 @@ html {
   padding-right: 5%;
 }
 
-/* CHART STYLES */
+/* TABLE STYLES */
 
-.ct-series-a .ct-bar {
-  stroke: blue;
-  stroke-width: 25px;
+.cell-center {
+  text-align: center;
 }
-

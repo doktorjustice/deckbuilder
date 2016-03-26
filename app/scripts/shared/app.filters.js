@@ -1,10 +1,10 @@
-'use strict';
-
 (function () {
+
+	'use strict';
 
 
 	angular
-		.module('AppCore')
+		.module('appCore')
 		.filter('class', classFilter)
 		.filter('set', setFilter)
 		.filter('type', typeFilter)
@@ -13,12 +13,6 @@
 
 	function classFilter () {
 
-		/**
-		 * Filter cards by player classes
-		 * @param  {array} cardArray The array to be filtered
-		 * @param  {array} classArray  Array of card sets to filter
-		 * @return {array}           Filtered array
-		 */
 	    return function (cardArray, classArray) {
 
 	        cardArray = cardArray || [];
@@ -55,15 +49,8 @@
 	}
 
 
-
 	function setFilter () {
 
-		/**
-		 * Filter cards by card sets
-		 * @param  {array} cardArray The array to be filtered
-		 * @param  {array} setArray  Array of card sets to filter
-		 * @return {array}           Filtered array
-		 */
 	    return function (cardArray, setArray) {
 
 	        cardArray = cardArray || [];
@@ -90,15 +77,8 @@
 	}
 
 
-
 	function typeFilter () {
 
-		/**
-		 * Filter cards by card types
-		 * @param  {array} cardArray The array to be filtered
-		 * @param  {array} typeArray  Array of card types to filter
-		 * @return {function}           Filter function
-		 */
 	    return function (cardArray, typeArray) {
 
 	        cardArray = cardArray || [];
@@ -124,14 +104,9 @@
 	    }
 	}
 
+
 	function gemFilter () {
 
-		/**
-		 * Filter cards by card rarity
-		 * @param  {array} cardArray The array to be filtered
-		 * @param  {array} gemArray  Array of card types to filter
-		 * @return {function}           Filter function
-		 */
 	    return function (cardArray, gemArray) {
 
 	        cardArray = cardArray || [];

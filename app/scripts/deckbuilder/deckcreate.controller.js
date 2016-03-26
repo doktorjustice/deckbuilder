@@ -1,9 +1,10 @@
-'use strict';
-
 (function () {
 
+	'use strict';
+
+	
 	angular
-		.module('Deckbuilder')
+		.module('deckBuilder')
 		.controller('DeckCreateCtrl', DeckCreateCtrl);
 
 
@@ -13,31 +14,29 @@
 	function DeckCreateCtrl ($location, cardData, cardApi, deckData) {
 	    
 	    var vm = this;
+
 	    vm.deckData = deckData;
 	    vm.cardData = cardData;
-	   
-	    vm.form = {};
-
-	    vm.setHero = function (hero) {
-
-	    	vm.form.hero = hero;
-
-	    	vm.form.deckName = deckData.generateDeckName(hero.name);
-
-	    	vm.deckData.createDeck(vm.form.deckName, vm.form.hero);
-	    	$location.path('/editor');
-	    }
 
 
+	    // Preload hero cards
 	    cardApi.getCardsByType('Hero')
 	    .then(function (response) {
 
 	    	vm.cardData.heroes = response.data;
-
 	    })
 	    .catch(function (error) {
 	        console.error(error);
 	    });
+
+
+	    function startDeck (hero) {
+
+	    	var deckName = deckData.generateDeckName(hero.name);
+	    	deckData.createDeck(name, hero);
+	    
+	    	$location.path('/editor');
+	    }
 	}
 
 })();

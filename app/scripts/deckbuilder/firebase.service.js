@@ -1,10 +1,10 @@
-'use strict';
-
 (function () {
+
+	'use strict';
 
 
 	angular
-		.module('Deckbuilder')
+		.module('deckBuilder')
 		.factory('firebaseService', firebaseService)
 
 
@@ -13,28 +13,42 @@
 
 	function firebaseService ($firebaseArray, $firebaseObject) {
 
-	    var ref = new Firebase('https://hsdeck.firebaseio.com');
 
-	    var firebaseService = {};
+	    var ref = new Firebase('https://hsdeck.firebaseio.com'),
+	    	decks = $firebaseArray(ref.child('/decks'));
 
-	    firebaseService.decks = $firebaseArray(ref.child('/decks'));
 
-	    firebaseService.saveNewDeck = function (newData) {
+	    return {
+	    	decks: decks,
+	    	saveNewDeck: saveNewDeck,
+	    	saveEditedDeck: saveEditedDeck,
+	    	getDeck: getDeck,
+	    	removeDeck: removeDeck
+	    };
 
-	        return firebaseService.decks.$add(newData)
+
+	    function saveNewDeck (newData) {
+
+	        return decks.$add(newData);
 	    }
 
-	    firebaseService.saveEditedDeck = function (deck) {
 
-	        return firebaseService.decks.$save(deck)
+	    function saveEditedDeck (deck) {
+
+	        return decks.$save(deck);
 	    }
 
-	    firebaseService.getDeck = function (key) {
 
-	        return firebaseService.decks.$getRecord(key)
+	    function getDeck (key) {
+
+	        return decks.$getRecord(key);
 	    }
 
-	    return firebaseService;
+
+	    function removeDeck (deck) {
+
+	    	return decks.$remove(deck);
+	    }
 	}
 
 })();

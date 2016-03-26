@@ -1,24 +1,25 @@
-'use strict';
-
 (function () {
+
+    'use strict';
+
 
     angular.module('hearthstoneApp', [
 
         // Core module
-        'AppCore',
+        'appCore',
 
         // Feature modules
-        'Cards',
-        'Deckbuilder',
+        'cards',
+        'deckBuilder',
         'deckStats',]
     );
     
     
-    angular.module('AppCore', ['ngRoute']);
+    angular.module('appCore', ['ngRoute']);
 
-    angular.module('Cards', []);
+    angular.module('cards', []);
 
-    angular.module('Deckbuilder', ['firebase']); 
+    angular.module('deckBuilder', ['firebase']); 
 
     angular.module('deckStats', ['googlechart']);
     

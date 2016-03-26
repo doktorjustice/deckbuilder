@@ -1,10 +1,10 @@
-'use strict';
-
 (function () {
 
+	'use strict';
 
+	
 	angular
-		.module('Cards')
+		.module('cards')
 		.factory('cardSearch', cardSearch)
 
 
@@ -12,6 +12,7 @@
 
 
 	function cardSearch ($q, cardApi, cardData) {
+
 
 		var cardSearch = {};
 		cardSearch.criteria = {};
@@ -24,6 +25,7 @@
 
 			cardSearch.criteria = processForm(form);
 		}	
+
 
 		function processForm (form) {
 

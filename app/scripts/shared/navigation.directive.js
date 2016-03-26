@@ -1,10 +1,10 @@
-'use strict';
-
 (function () {
 
+	'use strict';
+	
 
 	angular
-		.module('AppCore')
+		.module('appCore')
 		.directive('appNavigation', appNavigation)
 
 
@@ -13,7 +13,7 @@
 			restrict: 'E',
 			scope: {},
 			templateUrl: 'templates/navigation.html',
-			controller: 'navigationController',
+			controller: 'NavigationController',
 			controllerAs: 'navigation',
 		}
 	}

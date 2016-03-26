@@ -1,24 +1,44 @@
 <div class="row">
     
-    <div class="col-xs-12">
+    <div class="col-xs-4">
 
         <div class="col-xs-12">
-            <h2>{{editor.deckData.currentDeck.deckName}} <small>{{editor.deckData.currentDeck.stats.count}} / 30</small>
-            </h2>
+            <h4>{{editor.deckData.currentDeck.deckName}}</h4>
+            <h5>Cards: {{editor.deckData.currentDeck.stats.count}} / 30</h5>
         </div>
+        <table class="table table-hover">
+            <thead>
+                <th>Name</th>
+                <th class="cell-center">A/H</th>
+                <th class="cell-center">Cost</th>
+            </thead>
+            <tbody>
+                <tr ng-repeat="card in editor.deckData.currentDeck.cards" ng-click="editor.removeCard(card)">
+                    <td>
+                        {{card.name}}
+                        <span ng-show="card.deckCount==2"><strong> x2</strong></span>
+                    </td>
+                    <td class="cell-center">
+                        {{card.attack}}/{{card.health}}
+                    </td>
+                    <td class="cell-center">
+                        {{card.cost}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
-
-        <hearthstone-card 
-            class="col-xs-4 col-sm-3 col-md-2 card"
+<!--         <hearthstone-card 
+            class="col-xs-6"
             card="card" 
             ng-click="editor.removeCard(card)"
             ng-repeat="card in editor.deckData.currentDeck.cards | 
                 orderBy: 'cost'">
-        </hearthstone-card>
+        </hearthstone-card> -->
 
     </div>
 
-    <div class="col-xs-12">
+    <div class="col-xs-8">
 
         <div class="col-xs-12">
             <h2>Search for cards</h2>
@@ -29,20 +49,21 @@
 
         <div ng-show="editor.cardData.cards.length">
 
-            <div class="col-xs-12">
+            <div ng-hide="filteredCards.length">No cards to show. Try refining your search!</div>
+            
+            <div class="col-xs-12" ng-hide="!filteredCards.length">
                 <h3>{{editor.deckData.currentDeck.playerClass}} Cards</h3>
             </div>
 
             <hearthstone-card 
                 card="card"
-                class = "col-xs-3 card" 
-                ng-repeat = "card in editor.cardData.cards | 
+                class = "col-xs-4 card" 
+                ng-repeat = "card in filteredCards = (editor.cardData.cards | filter: editor.cardSearch.criteria.searchQuery)| 
                     orderBy: 'cost' | 
                     class: editor.deckData.currentDeck.playerClass | 
                     set: editor.cardSearch.criteria.sets |
                     gem: editor.cardSearch.criteria.rarities |
-                    type: editor.cardSearch.criteria.types |
-                    filter: editor.cardSearch.criteria.searchQuery"
+                    type: editor.cardSearch.criteria.types"
                 ng-click = "editor.addCard(card)"
                 ng-hide = "card.deckCount == 2"
                 >
@@ -51,20 +72,19 @@
         </div>
 
         <div ng-show="editor.cardData.cards.length">
-            <div class="col-xs-12">
+            <div class="col-xs-12" ng-hide="!filteredCards.length">
                 <h3>Neutral Cards</h3>
             </div>
 
             <hearthstone-card
                 card = "card" 
-                class = "col-xs-3 card" 
-                ng-repeat = "card in editor.cardData.cards | 
+                class = "col-xs-4 card" 
+                ng-repeat = "card in filteredCards = (editor.cardData.cards | filter: editor.cardSearch.criteria.searchQuery)| 
                     orderBy: 'cost' | 
-                    class:'Neutral' | 
+                    class: 'Neutral' | 
                     set: editor.cardSearch.criteria.sets |
                     gem: editor.cardSearch.criteria.rarities |
-                    type: editor.cardSearch.criteria.types | 
-                    filter: editor.cardSearch.criteria.searchQuery"
+                    type: editor.cardSearch.criteria.types "
                 ng-click = "editor.addCard(card)"
                 ng-hide = "card.deckCount == 2"
                 >
