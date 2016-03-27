@@ -17,6 +17,7 @@
 
 	    vm.deckData = deckData;
 	    vm.cardData = cardData;
+	    vm.startDeck = startDeck;
 
 
 	    // Preload hero cards
@@ -33,7 +34,7 @@
 	    function startDeck (hero) {
 
 	    	var deckName = deckData.generateDeckName(hero.name);
-	    	deckData.createDeck(name, hero);
+	    	deckData.createDeck(deckName, hero);
 	    
 	    	$location.path('/editor');
 	    }

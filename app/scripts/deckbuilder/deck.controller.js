@@ -2,11 +2,14 @@
 
 	'use strict';
 
+
 	angular
 		.module('deckBuilder')
 		.controller('Deck', Deck)
 
+
 	Deck.$inject = ['deckData', 'cardData'];
+
 
 	function Deck (deckData, cardData) {
 
@@ -17,6 +20,8 @@
 
 		    deckData.removeCardFromCurrentDeck(card);
 		    cardData.updateCardDeckCount(card, cardData.cards);
-		}	}
+		}
+
+	}
 
 })();

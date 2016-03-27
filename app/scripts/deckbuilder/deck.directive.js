@@ -5,20 +5,27 @@
 
 	angular
 		.module('deckBuilder')
-		.directive('myDeck', myDeck)
+		.directive('deck', deck)
 
 
-	function myDeck () {
+	function deck () {
 
 		return {
 			restrict: 'E',
 			scope: {
 				currentDeck: '=',
 			},
-			templateUrl: 'templates/mydeck.html',
+			templateUrl: 'templates/deck.html',
 			controller: 'Deck',
 			controllerAs: 'deck',
+			link: link
 		}
+	}
+
+
+	function link (scope, element, attrs) {
+
+		//...
 	}
 
 })();

@@ -44,3 +44,22 @@ html {
 .cell-center {
   text-align: center;
 }
+
+tr .card-popover {
+  display: none;
+  position: absolute;
+  width: 60%;
+  left: 40%;
+}
+
+tr:hover .card-popover {
+  display: block;
+}
+
+tr .card-delete {
+  display: none;
+}
+
+tr:hover .card-delete {
+  display: inline;
+}

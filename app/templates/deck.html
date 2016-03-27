@@ -2,17 +2,19 @@
     <h4>{{currentDeck.deckName}}</h4>
     <h5>Cards: {{currentDeck.stats.count}} / 30</h5>
 </div>
-<table class="table table-hover">
+<table class="table table-hover deck-table">
     <thead>
         <th>Name</th>
         <th class="cell-center">A/H</th>
         <th class="cell-center">Cost</th>
     </thead>
     <tbody>
-        <tr ng-repeat="card in currentDeck.cards" ng-click="deck.removeCard(card)">
-            <td>
+        <tr ng-repeat="card in currentDeck.cards" ng-mouseenter="deck.popUpCard=card">
+            <td class="col-xs-9">
+                <a href class="card-delete text-danger" ng-click="deck.removeCard(card)"><small>Remove</small></a>
                 {{card.name}}
                 <span ng-show="card.deckCount==2"><strong> x2</strong></span>
+                <hearthstone-card card="card" class="card-popover"></hearthstone-card>
             </td>
             <td class="cell-center">
                 {{card.attack}}/{{card.health}}
@@ -23,3 +25,4 @@
         </tr>
     </tbody>
 </table>
+
