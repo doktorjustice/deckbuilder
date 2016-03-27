@@ -2,39 +2,7 @@
     
     <div class="col-xs-4">
 
-        <div class="col-xs-12">
-            <h4>{{editor.deckData.currentDeck.deckName}}</h4>
-            <h5>Cards: {{editor.deckData.currentDeck.stats.count}} / 30</h5>
-        </div>
-        <table class="table table-hover">
-            <thead>
-                <th>Name</th>
-                <th class="cell-center">A/H</th>
-                <th class="cell-center">Cost</th>
-            </thead>
-            <tbody>
-                <tr ng-repeat="card in editor.deckData.currentDeck.cards" ng-click="editor.removeCard(card)">
-                    <td>
-                        {{card.name}}
-                        <span ng-show="card.deckCount==2"><strong> x2</strong></span>
-                    </td>
-                    <td class="cell-center">
-                        {{card.attack}}/{{card.health}}
-                    </td>
-                    <td class="cell-center">
-                        {{card.cost}}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-<!--         <hearthstone-card 
-            class="col-xs-6"
-            card="card" 
-            ng-click="editor.removeCard(card)"
-            ng-repeat="card in editor.deckData.currentDeck.cards | 
-                orderBy: 'cost'">
-        </hearthstone-card> -->
+        <my-deck current-deck="editor.deckData.currentDeck"></my-deck>
 
     </div>
 
@@ -56,7 +24,7 @@
             </div>
 
             <hearthstone-card 
-                card="card"
+                card = "card"
                 class = "col-xs-4 card" 
                 ng-repeat = "card in filteredCards = (editor.cardData.cards | filter: editor.cardSearch.criteria.searchQuery)| 
                     orderBy: 'cost' | 

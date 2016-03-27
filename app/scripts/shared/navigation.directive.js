@@ -9,6 +9,7 @@
 
 
 	function appNavigation () {
+		
 		return {
 			restrict: 'E',
 			scope: {},

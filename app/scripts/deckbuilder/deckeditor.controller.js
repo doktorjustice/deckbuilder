@@ -20,7 +20,6 @@
 	    vm.cardSearch = cardSearch;
 
 	    vm.addCard = addCard;
-	    vm.removeCard = removeCard;
 
 
 	    //Populate card data and update counts
@@ -79,12 +78,6 @@
 	        }
 	    }
 
-	   
-	    function removeCard (card) {
-
-	        deckData.removeCardFromCurrentDeck(card);
-	        cardData.updateCardDeckCount(card, cardData.cards);
-	    }
 	}
 
 })();
