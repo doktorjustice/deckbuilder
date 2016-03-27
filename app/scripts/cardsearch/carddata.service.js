@@ -63,6 +63,16 @@
 			"Legendary"
 		];
 
+		cardDataObject.abilities = [
+			'Taunt',
+			'Battlecry',
+			'Inspire',
+			'Deathrattle',
+			'Charge',
+			'Divine Shied',
+			'Windfury',
+		]; 
+
 		// METHODS
 		cardDataObject.fetchCards = fetchCards;
 		cardDataObject.updateCardDeckCount = updateCardDeckCount;

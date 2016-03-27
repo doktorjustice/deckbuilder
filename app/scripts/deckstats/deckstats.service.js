@@ -8,10 +8,10 @@
 		.factory('deckStatsService', deckStatsService)
 
 
-	deckStatsService.$inject = [];
+	deckStatsService.$inject = ['cardData'];
 
 
-	function deckStatsService () {
+	function deckStatsService (cardData) {
 
 
 		return deckStatsService = {
@@ -20,18 +20,6 @@
 
 
 		function calcDeckStats (cards) {
-
-			// 0) Card count - OK
-			// 1) Mana curve - OK
-			// 2) Type distribution - OK
-			// 3) Gem distribution - OK
-			// 4) Neutral/Class cards
-			// 5) Special abilities - OK
-			// 		Taunt
-			// 		Battlecry
-			// 		Deathrattle
-			// 		Inspire
-			// 9) Races
 			
 			var stats = {};
 
@@ -40,6 +28,7 @@
 			stats.type = updateTypeStat(cards);
 			stats.gems = updateRarityStats(cards);
 			stats.abilities = updateAbilities(cards);
+			stats.races = updateRaces(cards);
 
 			return stats;
 		}
@@ -108,15 +97,7 @@
 
 		function updateAbilities (cards) {
 
-			var abilities = [
-				'Taunt',
-				'Battlecry',
-				'Inspire',
-				'Deathrattle',
-				'Charge',
-				'Divine Shied',
-				'Windfury',
-				];
+			var abilities = cardData.abilities;
 
 			var	data = {};
 
@@ -137,6 +118,23 @@
 							data[value.name] = data[value.name] + 1 || 1;	
 						}
 					});
+				}
+			})
+
+			return data;
+		}
+
+
+		function updateRaces (cards) {
+
+			var data = {};
+
+			cards.forEach(function(card) {
+
+				if (card.race) {
+
+					data[card.race] = data[card.race] + 1 || 1;
+					
 				}
 			})
 

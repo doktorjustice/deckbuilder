@@ -16,7 +16,16 @@
 			ng-show="stats.deckData.currentDeck.chartData.abilities.data">
 		</div>
 		<div ng-hide="stats.deckData.currentDeck.chartData.abilities.data">
-			<small>No cards with Taunt, Battlecry, Charge, Deathrattle or Inspire. <a href="#/editor">Try adding some to the deck!</a></small>
+			<small>No cards with Taunt, Battlecry, Charge, Deathrattle, Inspire or Windfury ability. <a href="#/editor">Try adding some to the deck!</a></small>
+		</div>
+	</div>
+	<div class="col-xs-6">
+		<div 
+			google-chart chart="stats.deckData.currentDeck.chartData.races"
+			ng-show="stats.deckData.currentDeck.chartData.races.data">
+		</div>
+		<div ng-hide="stats.deckData.currentDeck.chartData.races.data">
+			<small>No cards with special race. <a href="#/editor">Try adding some to the deck!</a></small>
 		</div>
 	</div>
 </div>
