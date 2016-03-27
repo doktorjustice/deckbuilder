@@ -40,9 +40,11 @@
 		    "Basic",
 		    "Classic",
 		    "Naxxramas",
+		    "Blackrock Mountain",
 		    "Goblins vs Gnomes",
 		    "The Grand Tournament",
-		    "The League of Explorers"
+		    "The League of Explorers",
+		    "(Whispers of the Old Gods)",
 		];
 		
 		cardDataObject.races = [

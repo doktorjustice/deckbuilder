@@ -31,6 +31,7 @@
 					chartData.gems = defineChartObject(deck.stats.gems, 'Rarity', 'PieChart');
 					chartData.abilities = defineChartObject(deck.stats.abilities, 'Special Abilities', 'BarChart');
 					chartData.races = defineChartObject(deck.stats.races, 'Races', 'BarChart');
+					chartData.sets = defineChartObject(deck.stats.sets, 'Sets', 'PieChart');
 				}
 
 				return chartData;

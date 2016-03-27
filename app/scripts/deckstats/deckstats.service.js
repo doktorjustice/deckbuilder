@@ -29,6 +29,7 @@
 			stats.gems = updateRarityStats(cards);
 			stats.abilities = updateAbilities(cards);
 			stats.races = updateRaces(cards);
+			stats.sets = updateSets(cards);
 
 			return stats;
 		}
@@ -136,6 +137,22 @@
 					data[card.race] = data[card.race] + 1 || 1;
 					
 				}
+			})
+
+			return data;
+		}
+
+		function updateSets (cards) {
+
+			var data = {};
+
+			cards.forEach(function(card) {
+
+				if(card.cardSet) {
+
+					data[card.cardSet] = data[card.cardSet] + 1 || 1; 
+				}
+
 			})
 
 			return data;
