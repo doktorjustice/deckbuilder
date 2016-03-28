@@ -5,21 +5,21 @@
 <table class="table table-hover deck-table">
     <thead>
         <th>Name</th>
-        <th class="cell-center">A/H</th>
-        <th class="cell-center">Cost</th>
+        <th class="text-center">A/H</th>
+        <th class="text-center">Cost</th>
     </thead>
     <tbody>
         <tr ng-repeat="card in currentDeck.cards" ng-mouseenter="deck.popUpCard=card">
             <td class="col-xs-9">
-                <a href class="card-delete text-danger" ng-click="deck.removeCard(card)"><small>Remove</small></a>
+                <a href class="deck-table-link text-danger" ng-click="deck.removeCard(card)"><small>Remove</small></a>
                 {{card.name}}
                 <span ng-show="card.deckCount==2"><strong> x2</strong></span>
                 <hearthstone-card card="card" class="card-popover"></hearthstone-card>
             </td>
-            <td class="cell-center">
+            <td class="text-center">
                 {{card.attack}}/{{card.health}}
             </td>
-            <td class="cell-center">
+            <td class="text-center">
                 {{card.cost}}
             </td>
         </tr>

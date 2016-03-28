@@ -24,20 +24,6 @@ html {
   opacity: 1;
 }
 
-.card-counter {
-  position: absolute;
-  top: 5%;
-  left: 70%;
-  text-align: right;
-  transition: opacity 0.3s , color 0.3s;
-  opacity: 1;
-  word-wrap: normal;
-  color: yellow;
-  font-size: 40px;
-  line-height: 1;
-  font-weight: bold;
-  padding-right: 5%;
-}
 
 /* TABLE STYLES */
 
@@ -45,21 +31,21 @@ html {
   text-align: center;
 }
 
-tr .card-popover {
+.deck-table tr .card-popover {
   display: none;
   position: absolute;
   width: 60%;
   left: 40%;
 }
 
-tr:hover .card-popover {
+.deck-table tr:hover .card-popover {
   display: block;
 }
 
-tr .card-delete {
+.deck-table tr .deck-table-link {
   display: none;
 }
 
-tr:hover .card-delete {
+.deck-table tr:hover .deck-table-link {
   display: inline;
 }

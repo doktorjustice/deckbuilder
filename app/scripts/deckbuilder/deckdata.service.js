@@ -41,11 +41,14 @@
 
 	    function createDeck (deckName, hero, cards) {
 
+	    	var created = new Date();
+
 	        var newDeck = {
 	            deckName: deckName,
 	            hero: hero,
 	            playerClass: hero.playerClass,
 	            cards: cards || [],
+	            created: created.getTime(),
 	        };
 
 	        firebaseService.saveNewDeck(newDeck)

@@ -17,14 +17,20 @@
 	    var ref = new Firebase('https://hsdeck.firebaseio.com'),
 	    	decks = $firebaseArray(ref.child('/decks'));
 
-
 	    return {
 	    	decks: decks,
 	    	saveNewDeck: saveNewDeck,
 	    	saveEditedDeck: saveEditedDeck,
 	    	getDeck: getDeck,
-	    	removeDeck: removeDeck
+	    	removeDeck: removeDeck,
+	    	deckListLoaded: deckListLoaded
 	    };
+
+
+	    function deckListLoaded () {
+
+	    	return decks.$loaded()
+	    }
 
 
 	    function saveNewDeck (newData) {
