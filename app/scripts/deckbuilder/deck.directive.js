@@ -12,8 +12,9 @@
 
 		return {
 			restrict: 'E',
-			scope: {
-				currentDeck: '=',
+			scope: {},
+			bindToController: {
+				insertDeck: '=',
 			},
 			templateUrl: 'templates/deck.html',
 			controller: 'Deck',

@@ -20,7 +20,7 @@
         <li class="dropdown" ng-hide="navigation.path == '/dashboard' || navigation.path == '/search' || navigation.path == '/create'">
           <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Switch deck <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li ng-repeat="deck in navigation.deckData.decks"><a ng-click="navigation.deckData.loadDeck(deck.$id)" ng-hide="deck.$id == navigation.deckData.currentDeck.$id">{{deck.deckName}}</a></li>
+            <li ng-repeat="deck in navigation.deckData.decks"><a href ng-click="navigation.deckData.loadDeck(deck.$id)" ng-hide="deck.$id == navigation.deckData.currentDeck.$id">{{deck.deckName}}</a></li>
             <li role="separator" class="divider" ng-hide="navigation.deckData.decks.length == 1"></li>
             <li><a href="#/create">Create new deck</a></li>
           </ul>

@@ -15,6 +15,9 @@
 
 		var vm = this;
 		vm.removeCard = removeCard;
+		vm.changeDeckName = changeDeckName;
+		vm.editDeckName = editDeckName;
+		vm.isDeckNameEdited = false;
 
 		function removeCard (card) {
 
@@ -22,6 +25,19 @@
 		    cardData.updateCardDeckCount(card, cardData.cards);
 		}
 
+
+		function changeDeckName (newName) {
+
+			newName = newName || vm.insertDeck.deckName;
+			vm.insertDeck.deckName = newName;
+			deckData.saveDeck(vm.insertDeck);
+			vm.isDeckNameEdited = false;
+		}
+
+		function editDeckName () {
+
+			vm.isDeckNameEdited = true;
+		}
 	}
 
 })();
