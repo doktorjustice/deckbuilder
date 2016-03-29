@@ -15,11 +15,11 @@
     );
     
     
-    angular.module('appCore', ['ngRoute']);
+    angular.module('appCore', ['ngRoute','firebase']);
 
     angular.module('cards', []);
 
-    angular.module('deckBuilder', ['firebase']); 
+    angular.module('deckBuilder', []); 
 
     angular.module('deckStats', ['googlechart']);
     

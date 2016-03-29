@@ -8,14 +8,14 @@
 		.factory('firebaseService', firebaseService)
 
 
-	firebaseService.$inject = ['$firebaseArray', '$firebaseObject']
+	firebaseService.$inject = ['$firebaseRef', '$firebaseArray', '$firebaseObject']
 
 
-	function firebaseService ($firebaseArray, $firebaseObject) {
+	function firebaseService ($firebaseRef, $firebaseArray, $firebaseObject) {
 
 
-	    var ref = new Firebase('https://hsdeck.firebaseio.com'),
-	    	decks = $firebaseArray(ref.child('/decks'));
+	    // var ref = new Firebase('https://hsdeck.firebaseio.com'),
+	    var	decks = $firebaseArray($firebaseRef.decks);
 
 	    return {
 	    	decks: decks,

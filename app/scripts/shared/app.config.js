@@ -5,9 +5,14 @@
 
     angular
         .module('appCore')
-        .config(routeConfig);
+        .config(routeConfig)
+        .config(fbRef)
+        .constant('FirebaseUrl', 'https://hsdeck.firebaseio.com/');
 
-    routeConfig.$inject = ['$routeProvider', '$locationProvider'];
+
+    routeConfig.$inject = ['$routeProvider'];
+    fbRef.$inject = ['$firebaseRefProvider', 'FirebaseUrl'];
+
 
     function routeConfig($routeProvider) {
 
@@ -18,7 +23,7 @@
             controllerAs: 'dashboard',
             resolve: {
                 listLoaded: function (firebaseService) {
-                    
+
                     return firebaseService.deckListLoaded();
                 }
             }
@@ -45,6 +50,15 @@
         })
         .otherwise({
             redirectTo: '/dashboard'
+        });
+    }
+
+
+    function fbRef ($firebaseRefProvider, FirebaseUrl) {
+
+        $firebaseRefProvider.registerUrl({
+            default: FirebaseUrl,
+            decks: FirebaseUrl + 'decks'
         });
     }
 
