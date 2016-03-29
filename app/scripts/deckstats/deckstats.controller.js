@@ -19,18 +19,9 @@
 
 	    $scope.$watch('stats.deckData.currentDeck.$id', function () {
 
-	    	return getDataForCharts(deckData.currentDeck);
+	    	chartData.getDataForCharts(deckData.currentDeck);
 	    });
-
-
-	    function getDataForCharts (deck) {
-
-	    	chartData.setChartObject(deck)
-	    	.then(function(chartObject) {
-
-	    		deckData.currentDeck.chartData = chartObject;
-	    	})
-	    }
+   
 	}
 
 })();

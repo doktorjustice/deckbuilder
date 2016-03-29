@@ -3,13 +3,17 @@
     <div class="col-xs-4">
 
         <deck insert-deck="editor.deckData.currentDeck"></deck>
+        
+        <div class="col-xs-12">
+            <div google-chart chart="editor.deckData.currentDeck.chartData.mana"></div>
+        </div>
 
     </div>
 
     <div class="col-xs-8">
 
         <div class="col-xs-12">
-            <h2>Search for cards</h2>
+            <h4>Search for cards</h4>
 
             <search-form fixed-class="editor.deckData.currentDeck.playerClass"></search-form>
 

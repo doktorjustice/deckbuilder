@@ -17,7 +17,7 @@
         <li><a ng-href="#/search" ng-hide="navigation.path == '/search'">Search Cards</a></li>
         <li><a ng-href="#/stats" ng-show="navigation.path == '/editor'">Deck Stats</a></li>
         <li><a ng-href="#/editor" ng-show="navigation.path == '/stats'">Edit Deck</a></li>
-        <li class="dropdown" ng-hide="navigation.path == '/dashboard' || navigation.path == '/search' || navigation.path == '/create'">
+        <li class="dropdown" ng-hide="navigation.path == '/dashboard' || navigation.path == '/search' || navigation.path == '/create' || !navigation.decksLoaded">
           <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Switch deck <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li ng-repeat="deck in navigation.deckData.decks"><a href ng-click="navigation.deckData.loadDeck(deck.$id)" ng-hide="deck.$id == navigation.deckData.currentDeck.$id">{{deck.deckName}}</a></li>

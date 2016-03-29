@@ -36,6 +36,7 @@ html {
   position: absolute;
   width: 60%;
   left: 40%;
+  z-index: 100;
 }
 
 .deck-table tr:hover .card-popover {

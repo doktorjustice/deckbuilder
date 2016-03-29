@@ -7,14 +7,24 @@
 		.factory('chartData', chartData)
 
 
-	chartData.$inject = ['googleChartApiPromise'];
+	chartData.$inject = ['googleChartApiPromise', 'deckData'];
 
 
-	function chartData (googleChartApiPromise) {
+	function chartData (googleChartApiPromise, deckData) {
 
 		return {
 
-			setChartObject: setChartObject,
+			getDataForCharts: getDataForCharts,
+		}
+
+
+		function getDataForCharts (deck) {
+
+			setChartObject(deck)
+			.then(function(chartObject) {
+
+				deckData.currentDeck.chartData = chartObject;
+			})
 		}
 
 
@@ -29,9 +39,9 @@
 					chartData.mana = defineChartObject(deck.stats.mana, 'Mana', 'ColumnChart');
 					chartData.type = defineChartObject(deck.stats.type, 'Types', 'PieChart');
 					chartData.gems = defineChartObject(deck.stats.gems, 'Rarity', 'PieChart');
-					chartData.abilities = defineChartObject(deck.stats.abilities, 'Special Abilities', 'BarChart');
 					chartData.races = defineChartObject(deck.stats.races, 'Races', 'BarChart');
 					chartData.sets = defineChartObject(deck.stats.sets, 'Sets', 'PieChart');
+					chartData.abilities = defineChartObject(deck.stats.abilities, 'Special Abilities', 'BarChart');
 				}
 
 				return chartData;

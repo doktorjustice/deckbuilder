@@ -8,10 +8,10 @@
 		.controller('EditorCtrl', EditorCtrl)
 
 
-	EditorCtrl.$inject = ['$scope', 'cardData', 'deckData', 'cardSearch'];
+	EditorCtrl.$inject = ['$scope', 'cardData', 'deckData', 'cardSearch', 'chartData'];
 
 
-	function EditorCtrl ($scope, cardData, deckData, cardSearch) {
+	function EditorCtrl ($scope, cardData, deckData, cardSearch, chartData) {
 
 	    var vm = this;
 
@@ -34,10 +34,15 @@
 
 
 	    // Clear deckCount on cards if user changes deck in nav dropdown
-	    $scope.$watch('editor.deckData.currentDeck.$id', function(prev, cur) {
+	    $scope.$watch('editor.deckData.currentDeck.$id', function() {
 
 	    	updateDeckCounts(vm.deckData.cards);
 	    })
+
+	    $scope.$watch('editor.deckData.currentDeck.cards', function () {
+
+	    	chartData.getDataForCharts(deckData.currentDeck);
+	    });
 
 
 	    function updateDeckCounts (deck) {

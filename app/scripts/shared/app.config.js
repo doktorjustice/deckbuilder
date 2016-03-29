@@ -15,7 +15,13 @@
         .when('/dashboard', {
             templateUrl: 'templates/dashboard.html',
             controller: 'DashboardCtrl',
-            controllerAs: 'dashboard'
+            controllerAs: 'dashboard',
+            resolve: {
+                listLoaded: function (firebaseService) {
+                    
+                    return firebaseService.deckListLoaded();
+                }
+            }
         })
         .when('/create', {
             templateUrl: 'templates/create.html',
