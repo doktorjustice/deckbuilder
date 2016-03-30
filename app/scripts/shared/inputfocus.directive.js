@@ -22,7 +22,7 @@
 
 				if (value) {
 
-					// Need $timeout to wait for DOM to be ready
+					// Wait for DOM to be ready
 					$timeout(function () {
 
 						element[0].focus();

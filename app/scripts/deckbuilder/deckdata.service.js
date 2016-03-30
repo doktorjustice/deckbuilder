@@ -8,13 +8,15 @@
 		.factory('deckData', deckData);
 
 
-	deckData.$inject = ['$location', 'firebaseService', 'deckStatsService'];
+	deckData.$inject = ['$location', '$firebaseRef', '$firebaseArray', 'deckStatsService'];
 
 
-	function deckData ($location, firebaseService, deckStatsService) {
+	function deckData ($location, $firebaseRef, $firebaseArray, deckStatsService) {
+
+		var	decks = $firebaseArray($firebaseRef.decks);
 
 	    return deckData = {
-	    	decks : firebaseService.decks,
+	    	decks : decks,
 	    	currentDeck : {},
 	    	generateDeckName : generateDeckName,
 	    	createDeck : createDeck,
@@ -23,7 +25,14 @@
 	    	removeDeck: removeDeck,
 	    	addCardToCurrentDeck : addCardToCurrentDeck,
 	    	removeCardFromCurrentDeck : removeCardFromCurrentDeck,
+	    	decksLoaded: decksLoaded,
 	    };
+
+
+	    function decksLoaded () {
+
+	    	return decks.$loaded();
+	    }
 
 
 	    function generateDeckName (className) {
@@ -51,7 +60,7 @@
 	            created: created.getTime(),
 	        };
 
-	        firebaseService.saveNewDeck(newDeck)
+	        decks.$add(newDeck)
 	        .then(function (response) {
 
 	            deckData.loadDeck(response.key());
@@ -65,8 +74,13 @@
 
 	    function saveDeck (deck) {
 
-	        firebaseService.saveEditedDeck(deck)
+	        decks.$save(deck)
+	        .then(function () {
+
+	        	console.log("Deck saved: " + deck);
+	        })
 	        .catch(function (error) {
+
 	            console.error(error);
 	        })
 	    }
@@ -131,20 +145,19 @@
 	        }
 
 	        deckData.currentDeck.stats = deckStatsService.calcDeckStats(deckData.currentDeck.cards);
-	        
 	        deckData.saveDeck(deckData.currentDeck);
 	    }
 
 
 	    function loadDeck (key) {
 
-	    	deckData.currentDeck = firebaseService.getDeck(key);
+	    	deckData.currentDeck = decks.$getRecord(key);
 	    	deckData.currentDeck.cards = deckData.currentDeck.cards || [];
 	    }
 
 	    function removeDeck (deck) {
 
-	    	firebaseService.removeDeck(deck)
+	    	decks.$remove(deck)
 	    	.catch(function (error) {
 	    	    console.error(error);
 	    	})

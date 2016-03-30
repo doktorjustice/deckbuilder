@@ -22,9 +22,9 @@
             controller: 'DashboardCtrl',
             controllerAs: 'dashboard',
             resolve: {
-                listLoaded: function (firebaseService) {
+                listLoaded: function (deckData) {
 
-                    return firebaseService.deckListLoaded();
+                    return deckData.decksLoaded();
                 }
             }
         })
