@@ -1,0 +1,7 @@
+{
+  "firebase": "hsdeck",
+  "public": "app",
+  "ignore": [
+    "firebase.json"
+  ]
+}
