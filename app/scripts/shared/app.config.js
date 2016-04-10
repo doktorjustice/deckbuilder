@@ -7,11 +7,15 @@
         .module('appCore')
         .config(routeConfig)
         .config(fbRef)
-        .constant('FirebaseUrl', 'https://hsdeck.firebaseio.com/');
+        .constant('FirebaseUrl', 'https://hsdeck.firebaseio.com/')
+        .run(noAuthRouting);
 
 
     routeConfig.$inject = ['$routeProvider'];
+
     fbRef.$inject = ['$firebaseRefProvider', 'FirebaseUrl'];
+    
+    noAuthRouting.$inject = ['$rootScope', '$location'];
 
 
     function routeConfig($routeProvider) {
@@ -22,10 +26,14 @@
             controller: 'DashboardCtrl',
             controllerAs: 'dashboard',
             resolve: {
-                listLoaded: function (deckData) {
+                userData: function ($firebaseAuthService, authService) {
 
-                    return deckData.decksLoaded();
-                }
+                    return $firebaseAuthService.$requireAuth()
+                    .then(function (user) {
+
+                        return authService.getUser(user.uid);
+                    });
+                },
             }
         })
         .when('/create', {
@@ -48,6 +56,11 @@
             controller: 'CardSearchCtrl',
             controllerAs: 'search'
         })
+        .when('/login', {
+            templateUrl: 'templates/login.html',
+            controller: 'LoginCtrl',
+            controllerAs: 'login'
+        })
         .otherwise({
             redirectTo: '/dashboard'
         });
@@ -58,8 +71,21 @@
 
         $firebaseRefProvider.registerUrl({
             default: FirebaseUrl,
-            decks: FirebaseUrl + 'decks'
+            decks: FirebaseUrl + 'decks',
+            users: FirebaseUrl + 'users',
         });
     }
+
+
+    function noAuthRouting ($rootScope, $location) {
+
+        $rootScope.$on("$routeChangeError", function (event, next, previous, error) {
+
+            if (error == 'AUTH_REQUIRED') {
+
+                $location.path("/login");
+            }
+        });
+    };
 
 })();

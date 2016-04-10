@@ -1,4 +1,4 @@
-(function (){
+(function () {
 
 	'use strict';
 
@@ -8,31 +8,23 @@
 		.factory('deckData', deckData);
 
 
-	deckData.$inject = ['$location', '$firebaseRef', '$firebaseArray', 'deckStatsService'];
+	deckData.$inject = ['$firebaseArray', '$firebaseObject', 'FirebaseUrl', 'deckStatsService', 'authService'];
 
 
-	function deckData ($location, $firebaseRef, $firebaseArray, deckStatsService) {
-
-		var	decks = $firebaseArray($firebaseRef.decks);
-
-	    return deckData = {
-	    	decks : decks,
-	    	currentDeck : {},
-	    	generateDeckName : generateDeckName,
-	    	createDeck : createDeck,
-	    	loadDeck : loadDeck,
-	    	saveDeck : saveDeck,
-	    	removeDeck: removeDeck,
-	    	addCardToCurrentDeck : addCardToCurrentDeck,
-	    	removeCardFromCurrentDeck : removeCardFromCurrentDeck,
-	    	decksLoaded: decksLoaded,
-	    };
+	function deckData ($firebaseArray, $firebaseObject, FirebaseUrl, deckStatsService, authService) {
 
 
-	    function decksLoaded () {
-
-	    	return decks.$loaded();
-	    }
+		return deckData = {
+			decks : [],
+			currentDeck : {},
+			generateDeckName : generateDeckName,
+			createDeck : createDeck,
+			loadDeck : loadDeck,
+			saveDeck : saveDeck,
+			removeDeck: removeDeck,
+			addCardToCurrentDeck : addCardToCurrentDeck,
+			removeCardFromCurrentDeck : removeCardFromCurrentDeck,
+		};
 
 
 	    function generateDeckName (className) {
@@ -60,7 +52,8 @@
 	            created: created.getTime(),
 	        };
 
-	        decks.$add(newDeck)
+
+	        deckData.decks.$add(newDeck)
 	        .then(function (response) {
 
 	            deckData.loadDeck(response.key());
@@ -74,7 +67,7 @@
 
 	    function saveDeck (deck) {
 
-	        decks.$save(deck)
+	        deckData.decks.$save(deck)
 	        .then(function () {
 
 	        	console.log("Deck saved: " + deck);
@@ -88,41 +81,34 @@
 
 	    function addCardToCurrentDeck (newCard) {
 
-	    	// Initialize values
 	        deckData.currentDeck.cards = deckData.currentDeck.cards || [];
 	        deckData.currentDeck.stats = deckData.currentDeck.stats || {};
 	        deckData.currentDeck.stats.count = deckData.currentDeck.stats.count || 0;
 
-	        // Check deck count and card count limits
+
 	        if (deckData.currentDeck.stats.count < 30 && newCard.deckCount < 2) {
 
-	        	// Check if an instance of the card has been already added
 	        	var deckCardFound = deckData.currentDeck.cards.find( function (card) {
 
 	        	    return card.cardId == newCard.cardId;
 	        	})
 
-	        	// If the card has been added increase its counter
 	        	if (deckCardFound) {
 
 	        	    deckCardFound.deckCount += 1;
 
-	        	// Otherwise add it with a count of 1
 	        	} else {
 	        	
 	        	    deckData.currentDeck.cards.push(newCard);
 	        	    newCard.deckCount = 1;
 	        	}
 
-	        	// Refresh deck stats
 	        	deckData.currentDeck.stats = deckStatsService.calcDeckStats(deckData.currentDeck.cards);
 
-	        	// Save deck to Firebase
 	        	deckData.saveDeck(deckData.currentDeck);
 
 	        	return deckCardFound;
 
-	        // Throw errors if limits are reached
 	        } else if (deckData.currentDeck.stats.count === 30) {
 
 	        	throw new Error("Deck is full!");
@@ -151,13 +137,14 @@
 
 	    function loadDeck (key) {
 
-	    	deckData.currentDeck = decks.$getRecord(key);
+	    	deckData.currentDeck = deckData.decks.$getRecord(key);
 	    	deckData.currentDeck.cards = deckData.currentDeck.cards || [];
 	    }
 
+
 	    function removeDeck (deck) {
 
-	    	decks.$remove(deck)
+	    	deckData.decks.$remove(deck)
 	    	.catch(function (error) {
 	    	    console.error(error);
 	    	})

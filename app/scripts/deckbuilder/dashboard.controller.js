@@ -8,10 +8,12 @@
 		.controller('DashboardCtrl', DashboardCtrl)
 
 
-	DashboardCtrl.$inject = ['$location', '$window', 'deckData', 'cardData']
+	DashboardCtrl.$inject = ['$location', '$window', 'deckData', 'cardData', 'authService', 'userData']
 
 
-	function DashboardCtrl ($location, $window, deckData, cardData) {
+	function DashboardCtrl ($location, $window, deckData, cardData, authService, userData) {
+
+		deckData.decks = userData[1];
 
 	    var vm = this;
 
@@ -19,6 +21,7 @@
 	    vm.editDeck = editDeck;
 	    vm.showDeckStats = showDeckStats;
 	    vm.deleteDeck = deleteDeck;
+	    vm.auth = authService;
 
 
 	    function editDeck (key) {
