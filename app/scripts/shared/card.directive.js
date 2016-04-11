@@ -22,7 +22,7 @@
 
 	function link (scope, element, attrs) {
 
-		scope.card.img = scope.card.img.replace('http', 'https');
+		scope.card.img = scope.card.img.replace('http:', 'https:');
 	}
 
 })();
