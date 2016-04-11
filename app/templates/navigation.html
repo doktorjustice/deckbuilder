@@ -27,7 +27,7 @@
         </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href>{{navigation.auth.user.email}}</a></li>
+        <li><a href ng-hide="navigation.path == '/login'">{{navigation.auth.user.email}}</a></li>
         <li><a href ng-click="navigation.auth.logoutUser()" ng-hide="navigation.path == '/login'">Logout</a></li>
       </ul>
     </div>
