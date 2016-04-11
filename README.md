@@ -1,8 +1,10 @@
 # Hearthstone Deckbuilder
 
-My first project in AngularJS. Serves learning purposes and experimenting. The basic goal is to select cards for Hearthstone decks and get simple statistics and charts.
+My first project in AngularJS. Serves learning purposes and experimenting. 
 
-[Demo](https://hsdeck.firebaseapp.com/)
+The app lets you search through available cards, compile Hearthstone decks and get simple statistics and charts about them.
+
+[Demo on Firebase hosting](https://hsdeck.firebaseapp.com/)
 
 Uses [Angularfire](https://github.com/firebase/angularfire) and [Angular Google Charts](https://github.com/angular-google-chart/angular-google-chart). Card data comes from [Hearthstone API](http://hearthstoneapi.com/)
 

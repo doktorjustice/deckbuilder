@@ -14,7 +14,7 @@
     <div class="collapse navbar-collapse" id="js-navbar-collapse">
 
       <ul class="nav navbar-nav">
-        <li><a ng-href="#/search" ng-hide="navigation.path == '/search' || !navigation.auth.user.uid">Search Cards</a></li>
+        <li><a ng-href="#/search" ng-hide="navigation.path == '/search' || navigation.path == '/login'">Search Cards</a></li>
         <li><a ng-href="#/stats" ng-show="navigation.path == '/editor'">Deck Stats</a></li>
         <li><a ng-href="#/editor" ng-show="navigation.path == '/stats'">Edit Deck</a></li>
         <li class="dropdown" ng-hide="navigation.path == '/dashboard' || navigation.path == '/search' || navigation.path == '/create' || navigation.path == '/login'">
@@ -28,7 +28,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li><a href>{{navigation.auth.user.email}}</a></li>
-        <li><a href ng-click="navigation.auth.logoutUser()">Logout</a></li>
+        <li><a href ng-click="navigation.auth.logoutUser()" ng-hide="navigation.path == '/login'">Logout</a></li>
       </ul>
     </div>
   </div>

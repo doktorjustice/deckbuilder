@@ -14,7 +14,8 @@
 	function DashboardCtrl ($location, $window, deckData, cardData, authService, userData) {
 
 		deckData.decks = userData[1];
-
+		authService.user = userData[0];
+		
 	    var vm = this;
 
 	    vm.deckData = deckData;
