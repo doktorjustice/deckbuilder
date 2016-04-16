@@ -1,14 +1,17 @@
-<div class="row">
-	
-	<div class="col-xs-12">
-		<h3>Choose your hero!</h3>
+<div class="container">
+	<div class="row">
+		
+		<div class="col-xs-12">
+			<h3>Choose your hero!</h3>
+		</div>
+
+			<hearthstone-card
+				card="hero" 
+				ng-click="create.startDeck(hero)" 
+				class="col-xs-2 card" 
+				ng-repeat="hero in create.cardData.heroes">
+			</hearthstone-card>
+
 	</div>
-
-		<hearthstone-card
-			card="hero" 
-			ng-click="create.startDeck(hero)" 
-			class="col-xs-2 card" 
-			ng-repeat="hero in create.cardData.heroes">
-		</hearthstone-card>
-
 </div>
+

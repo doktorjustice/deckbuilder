@@ -8,10 +8,10 @@
 		.factory('deckData', deckData);
 
 
-	deckData.$inject = ['$firebaseArray', '$firebaseObject', 'FirebaseUrl', 'deckStatsService', 'authService'];
+	deckData.$inject = ['$firebaseArray', '$firebaseObject', 'FirebaseUrl', 'deckStatsService'];
 
 
-	function deckData ($firebaseArray, $firebaseObject, FirebaseUrl, deckStatsService, authService) {
+	function deckData ($firebaseArray, $firebaseObject, FirebaseUrl, deckStatsService) {
 
 
 		return deckData = {

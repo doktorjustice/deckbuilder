@@ -8,13 +8,10 @@
 		.controller('DashboardCtrl', DashboardCtrl)
 
 
-	DashboardCtrl.$inject = ['$location', '$window', 'deckData', 'cardData', 'authService', 'userData']
+	DashboardCtrl.$inject = ['$location', '$window', 'deckData', 'cardData', 'authService']
 
 
-	function DashboardCtrl ($location, $window, deckData, cardData, authService, userData) {
-
-		deckData.decks = userData[1];
-		authService.user = userData[0];
+	function DashboardCtrl ($location, $window, deckData, cardData, authService) {
 		
 	    var vm = this;
 

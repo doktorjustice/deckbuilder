@@ -1,91 +1,114 @@
-(function () {
+(function() {
 
-    'use strict';
-    
-
-    angular
-        .module('appCore')
-        .config(routeConfig)
-        .config(fbRef)
-        .constant('FirebaseUrl', 'https://hsdeck.firebaseio.com/')
-        .run(noAuthRouting);
+	'use strict';
 
 
-    routeConfig.$inject = ['$routeProvider'];
-
-    fbRef.$inject = ['$firebaseRefProvider', 'FirebaseUrl'];
-    
-    noAuthRouting.$inject = ['$rootScope', '$location'];
-
-
-    function routeConfig($routeProvider) {
-
-        $routeProvider
-        .when('/dashboard', {
-            templateUrl: 'templates/dashboard.html',
-            controller: 'DashboardCtrl',
-            controllerAs: 'dashboard',
-            resolve: {
-                userData: function ($firebaseAuthService, authService) {
-
-                    return $firebaseAuthService.$requireAuth()
-                    .then(function (user) {
-
-                        return authService.getUser(user.uid);
-                    });
-                },
-            }
-        })
-        .when('/create', {
-            templateUrl: 'templates/create.html',
-            controller: 'DeckCreateCtrl',
-            controllerAs: 'create'
-        })
-        .when('/editor', {
-            templateUrl: 'templates/editor.html',
-            controller: 'EditorCtrl',
-            controllerAs: 'editor'
-        })
-        .when('/stats', {
-            templateUrl: 'templates/stats.html',
-            controller: 'StatsOverviewCtrl',
-            controllerAs: 'stats'
-        })
-        .when('/search', {
-            templateUrl: 'templates/search.html',
-            controller: 'CardSearchCtrl',
-            controllerAs: 'search'
-        })
-        .when('/login', {
-            templateUrl: 'templates/login.html',
-            controller: 'LoginCtrl',
-            controllerAs: 'login'
-        })
-        .otherwise({
-            redirectTo: '/dashboard'
-        });
-    }
+	angular
+		.module('appCore')
+		.config(routeConfig)
+		.config(fbRef)
+		.constant('FirebaseUrl', 'https://hsdeck.firebaseio.com/')
+		.run(noAuthRouting);
 
 
-    function fbRef ($firebaseRefProvider, FirebaseUrl) {
+	routeConfig.$inject = ['$stateProvider', '$urlRouterProvider'];
 
-        $firebaseRefProvider.registerUrl({
-            default: FirebaseUrl,
-            decks: FirebaseUrl + 'decks',
-            users: FirebaseUrl + 'users',
-        });
-    }
+	fbRef.$inject = ['$firebaseRefProvider', 'FirebaseUrl'];
+
+	noAuthRouting.$inject = ['$rootScope', '$state'];
 
 
-    function noAuthRouting ($rootScope, $location) {
+	function routeConfig($stateProvider, $urlRouterProvider) {
 
-        $rootScope.$on("$routeChangeError", function (event, next, previous, error) {
+		$urlRouterProvider.otherwise('/dashboard');
 
-            if (error == 'AUTH_REQUIRED') {
+		$stateProvider
+		.state('app', {
+			abstract: true,
+			url: '',
+			views: {
+				navigation: {
+					templateUrl: 'templates/navigation.html',
+					controller: 'NavigationController',
+					controllerAs: 'navigation'
+				},
+				content: {
+					template: '<ui-view></ui-view>',
+				}
+			},
+			resolve: {
+				auth: function ($firebaseAuthService) {
 
-                $location.path("/login");
-            }
-        });
-    };
+					return $firebaseAuthService.$requireAuth();
+				},
+			},
+		})
+		.state('app.dashboard', {
+			url: '/dashboard',
+			templateUrl: 'templates/dashboard.html',
+			controller: 'DashboardCtrl',
+			controllerAs: 'dashboard',
+		})
+		.state('app.create', {
+			url: '/create',
+			templateUrl: 'templates/create.html',
+			controller: 'DeckCreateCtrl',
+			controllerAs: 'create'
+		})
+		.state('app.edit', {
+			url: '/editor',
+			templateUrl: 'templates/editor.html',
+			controller: 'EditorCtrl',
+			controllerAs: 'editor'
+		})
+		.state('app.stats', {
+			url: '/stats',
+			templateUrl: 'templates/stats.html',
+			controller: 'StatsOverviewCtrl',
+			controllerAs: 'stats'
+		})
+		.state('app.search', {
+			url: '/search',
+			templateUrl: 'templates/search.html',
+			controller: 'CardSearchCtrl',
+			controllerAs: 'search'
+		})
+		.state('login', {
+			url: '/login',
+			views: {
+				navigation: {
+					templateUrl: 'templates/navigation.html',
+				},
+				content: {
+					templateUrl: 'templates/login.html',
+					controller: 'LoginCtrl',
+					controllerAs: 'login'
+				}
+			}
+		})
+	}
+
+
+	function fbRef ($firebaseRefProvider, FirebaseUrl) {
+
+	    $firebaseRefProvider.registerUrl({
+	        default: FirebaseUrl,
+	        decks: FirebaseUrl + 'decks',
+	        users: FirebaseUrl + 'users',
+	    });
+	}
+
+
+	function noAuthRouting ($rootScope, $state) {
+
+		$rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
+
+		 	if (error === "AUTH_REQUIRED") {
+
+				$state.go("login");
+		  	}
+		});
+	};
+
 
 })();

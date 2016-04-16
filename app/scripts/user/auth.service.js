@@ -8,10 +8,10 @@
 		.factory('authService', authService)
 
 
-	authService.$inject = ['$location', '$q', '$firebaseAuthService', '$firebaseRef', '$firebaseObject', '$firebaseArray', 'FirebaseUrl'];
+	authService.$inject = ['$location', '$state', '$q', '$firebaseAuthService', '$firebaseRef', '$firebaseObject', '$firebaseArray', 'FirebaseUrl', 'deckData'];
 
 
-	function authService ($location, $q, $firebaseAuthService, $firebaseRef, $firebaseObject, $firebaseArray, FirebaseUrl) {
+	function authService ($location, $state, $q, $firebaseAuthService, $firebaseRef, $firebaseObject, $firebaseArray, FirebaseUrl, deckData) {
 
 		var auth = $firebaseAuthService;
 		var serviceObject = {};
@@ -25,8 +25,31 @@
 
 		auth.$onAuth(function (newData) {
 			
-			$location.path('/');
+			if (newData) {
+	
+				getUser(newData.uid)
+				.then(function (userData) {
 
+					deckData.decks = userData[1];
+					serviceObject.user = userData[0];
+
+					if ($state.current.name == 'login') {
+
+						$state.go('app.dashboard');
+					}
+				})
+				.catch(function (error) {
+
+					console.error(error);
+				})
+
+			} else {
+
+				deckData.decks = [];
+				serviceObject.user = {};
+
+				$state.go('login');
+			}
 		});
 
 	
