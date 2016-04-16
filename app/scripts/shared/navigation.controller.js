@@ -8,10 +8,10 @@
 		.controller('NavigationController', NavigationController)
 
 
-	NavigationController.$inject = ['$rootScope','$location', 'deckData', 'authService', '$firebaseAuthService'];
+	NavigationController.$inject = ['$rootScope','$location','$state','deckData','authService','$firebaseAuthService'];
 
 
-	function NavigationController ($rootScope, $location, deckData, authService, $firebaseAuthService) {
+	function NavigationController ($rootScope, $location, $state, deckData, authService, $firebaseAuthService) {
 
 		var vm = this;
 		vm.loadDeck = deckData.loadDeck;
@@ -21,6 +21,8 @@
 		$rootScope.$on("$stateChangeSuccess", function (event, next, previous, error) {
 
 		    vm.path = $location.path();
+		    vm.state = $state.current.name;
+
 		});
 	}
 
