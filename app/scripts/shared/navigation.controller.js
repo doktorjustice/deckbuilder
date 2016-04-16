@@ -8,11 +8,11 @@
 		.controller('NavigationController', NavigationController)
 
 
-	NavigationController.$inject = ['$rootScope','$location', 'deckData', 'authService', '$firebaseAuthService', '$scope'];
+	NavigationController.$inject = ['$rootScope','$location', 'deckData', 'authService', '$firebaseAuthService', '$scope', 'userData'];
 
 
-	function NavigationController ($rootScope, $location, deckData, authService, $firebaseAuthService, $scope) {
-
+	function NavigationController ($rootScope, $location, deckData, authService, $firebaseAuthService, $scope, userData) {
+		console.log(userData);
 		var vm = this;
 		vm.loadDeck = deckData.loadDeck;
 		vm.deckData = deckData;

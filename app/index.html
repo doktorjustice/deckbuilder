@@ -22,13 +22,8 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <div class="header">
-     <app-navigation></app-navigation>
-    </div>
-
-    <div class="container content">
-      <div ng-view=""></div>
-    </div>
+    <div ui-view="navigation"></div>
+    <div ui-view="content"></div>
 
     <div class="footer">
       <div class="container">
@@ -38,23 +33,24 @@
 
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
-    <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/firebase/firebase.js"></script>
     <script src="bower_components/angularfire/dist/angularfire.js"></script>
     <script src="bower_components/angular-google-chart/ng-google-chart.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/app.js"></script>
-    <script src="scripts/shared/app.config.js"></script>
+<!--     <script src="scripts/shared/app.config.js"></script>
+ -->    <script src="scripts/shared/app.config2.js"></script>
     <script src="scripts/shared/app.filters.js"></script>
     <script src="scripts/shared/card.directive.js"></script>
     <script src="scripts/shared/navigation.controller.js"></script>
-    <script src="scripts/shared/navigation.directive.js"></script>
     <script src="scripts/shared/inputfocus.directive.js"></script>
     <script src="scripts/user/login.controller.js"></script>
     <script src="scripts/user/auth.service.js"></script>

@@ -66,7 +66,7 @@
 				users[data.uid] = {
 					email: credentials.email,
 					createdAt: date.getTime()
-				}
+				};
 
 				return users.$save();
 			})
