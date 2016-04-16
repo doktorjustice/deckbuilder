@@ -6,7 +6,8 @@
 		.module('appCore')
 		.config(routeConfig)
 		.config(fbRef)
-		.constant('FirebaseUrl', 'https://hsdeck.firebaseio.com/');
+		.constant('FirebaseUrl', 'https://hsdeck.firebaseio.com/')
+		.run(noAuthRouting);
 
 
 	routeConfig.$inject = ['$stateProvider', '$urlRouterProvider'];
@@ -23,9 +24,17 @@
 			abstract: true,
 			url: '',
 			resolve: {
-				userData: function () {
+				userData: function ($firebaseAuthService, authService) {
 
-					return 'userData comes here';
+					return $firebaseAuthService.$requireAuth()
+				    .then(function (user) {
+
+				        return authService.getUser(user.uid);
+				    });
+				},
+				path: function ($location) {
+
+					return $location.path();
 				}
 			},
 			views: {
@@ -45,6 +54,21 @@
 			controller: 'DashboardCtrl',
 			controllerAs: 'dashboard'
 		})
+		.state('login', {
+			url: '/login',
+			views: {
+				navigation: {
+					templateUrl: 'templates/navigation.html',
+					// controller: 'NavigationController',
+					// controllerAs: 'navigation'
+				},
+				content: {
+					templateUrl: 'templates/login.html',
+					controller: 'LoginCtrl',
+					controllerAs: 'login'
+				}
+			}
+		})
 	}
 
 
@@ -56,6 +80,17 @@
 	        users: FirebaseUrl + 'users',
 	    });
 	}
+
+	function noAuthRouting ($rootScope, $state) {
+
+		$rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
+
+		 	if (error === "AUTH_REQUIRED") {
+
+				$state.go("login");
+		  	}
+		});
+	};
 
 
 })();

@@ -15,7 +15,7 @@
     );
     
     
-    angular.module('appCore', ['ngRoute','firebase', 'ui.router']);
+    angular.module('appCore', ['ngRoute','firebase','ui.router']);
 
     angular.module('cards', []);
 
