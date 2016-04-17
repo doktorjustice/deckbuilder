@@ -29,15 +29,18 @@
 
 		function changeDeckName (newName) {
 
-			if (newName !== vm.insertDeck.deckName) {
+			if (newName) {
 
 				vm.insertDeck.deckName = newName || vm.insertDeck.deckName;
 				deckData.saveDeck(vm.insertDeck);
+				
+			} else {
+				console.log('No change!')
 			}
 
 			vm.isDeckNameEdited = false;
 		}
-		
+
 
 		function editDeckName () {
 

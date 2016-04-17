@@ -21,7 +21,7 @@
     </form>
 </div>
 
-<h5>Cards: {{deck.insertDeck.stats.count}} / 30</h5>
+<!-- <h5>Cards: {{deck.insertDeck.stats.count}} / 30</h5>
 
 <table class="table table-hover deck-table">
     <thead>
@@ -30,7 +30,7 @@
         <th class="text-center">Cost</th>
     </thead>
     <tbody>
-        <tr ng-repeat="card in deck.insertDeck.cards" ng-mouseenter="deck.popUpCard=card">
+        <tr ng-repeat="card in deck.insertDeck.cards">
             <td class="col-xs-9">
                 <a href class="deck-table-link text-danger" ng-click="deck.removeCard(card)"><small>Remove</small></a>
                 {{card.name}}
@@ -45,5 +45,12 @@
             </td>
         </tr>
     </tbody>
-</table>
+</table> -->
+
+<h5>Cards: {{deck.insertDeck.stats.count}} / 30</h5>
+<div class="deck">
+    <div class="lower-card" ng-class="{'last-card': $last}" ng-repeat="card in deck.insertDeck.cards">
+        <hearthstone-card card="card" ng-click="deck.removeCard(card)"></hearthstone-card>
+    </div>
+</div>
 

@@ -78,7 +78,7 @@
 			
 			} catch(e) {
 
-				console.error(e + title);
+				console.info(e.message + title);
 
 				return {};
 

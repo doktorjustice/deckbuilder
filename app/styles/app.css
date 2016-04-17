@@ -50,3 +50,19 @@ html {
 .deck-table tr:hover .deck-table-link {
   display: inline;
 }
+
+.lower-card {
+  width: 100%;
+  margin-bottom: -140%;
+  transition: all 0.3s;
+}
+
+.last-card {
+  margin-bottom: 0px !important;
+}
+
+.lower-card:hover {
+  width: 120%;
+  margin-bottom: -25%;
+}
+
