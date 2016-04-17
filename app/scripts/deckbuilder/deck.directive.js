@@ -24,9 +24,15 @@
 	}
 
 
-	function link (scope, element, attrs) {
+	function link (scope, elem, attrs) {
 
-		//...
+		var deckName = angular.element(elem[0].children[0]);
+
+		deckName.on('mouseenter mouseleave', function (event) {
+
+			deckName.toggleClass("text-info");
+
+		})
 	}
 
 })();

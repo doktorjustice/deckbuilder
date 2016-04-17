@@ -50,11 +50,3 @@ html {
 .deck-table tr:hover .deck-table-link {
   display: inline;
 }
-
-.deck-name .icon {
-  display: none;
-}
-
-.deck-name:hover .icon {
-  display: inline;
-}

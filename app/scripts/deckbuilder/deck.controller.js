@@ -19,6 +19,7 @@
 		vm.editDeckName = editDeckName;
 		vm.isDeckNameEdited = false;
 
+
 		function removeCard (card) {
 
 		    deckData.removeCardFromCurrentDeck(card);
@@ -28,11 +29,15 @@
 
 		function changeDeckName (newName) {
 
-			newName = newName || vm.insertDeck.deckName;
-			vm.insertDeck.deckName = newName;
-			deckData.saveDeck(vm.insertDeck);
+			if (newName !== vm.insertDeck.deckName) {
+
+				vm.insertDeck.deckName = newName || vm.insertDeck.deckName;
+				deckData.saveDeck(vm.insertDeck);
+			}
+
 			vm.isDeckNameEdited = false;
 		}
+		
 
 		function editDeckName () {
 

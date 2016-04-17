@@ -1,5 +1,12 @@
-<h4 class="deck-name" ng-click="deck.editDeckName()" ng-hide="deck.isDeckNameEdited">{{deck.insertDeck.deckName}} <small class="icon"><span class="glyphicon glyphicon-pencil"></span></small></h4>
+<!-- Deck name -->
+<h4 class="deck-name" 
+    ng-click="deck.editDeckName()" 
+    ng-hide="deck.isDeckNameEdited">
+    {{deck.insertDeck.deckName}} 
+    <small class="icon"><span class="glyphicon glyphicon-pencil"></span></small>
+</h4>
 
+<!-- Text input for editing the deck name -->
 <div class="col-xs-12" ng-show="deck.isDeckNameEdited">
     <form ng-submit="deck.changeDeckName(deck.form.name)">
         <div class="form-group">
